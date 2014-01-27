@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ADITOAUTH" Class="AditOAUTHDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=192.168.1.5;Initial Catalog=ADITOAUTH;User ID=sa" SettingsObjectName="AditOAUTH.Server.Properties.Settings" SettingsPropertyName="ADITOAUTHConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.oauth_client_endpoints" Member="oauth_client_endpoints">
+    <Type Name="oauth_client_endpoint">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="client_id" Type="System.String" DbType="NVarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="uri_protocol" Type="System.String" DbType="NVarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="uri_domain" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="uri_port" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="uri_path" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="oauth_client_oauth_client_endpoint" Member="oauth_client" ThisKey="client_id" OtherKey="id" Type="oauth_client" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.oauth_sessions" Member="oauth_sessions">
+    <Type Name="oauth_session">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="client_id" Type="System.String" DbType="NVarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="owner_type" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="owner_id" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Association Name="oauth_session_oauth_session_access_token" Member="oauth_session_access_tokens" ThisKey="id" OtherKey="session_id" Type="oauth_session_access_token" />
+      <Association Name="oauth_session_oauth_session_authcode" Member="oauth_session_authcodes" ThisKey="id" OtherKey="session_id" Type="oauth_session_authcode" />
+      <Association Name="oauth_session_oauth_session_redirect" Member="oauth_session_redirect" ThisKey="id" OtherKey="session_id" Type="oauth_session_redirect" Cardinality="One" />
+      <Association Name="oauth_client_oauth_session" Member="oauth_client" ThisKey="client_id" OtherKey="id" Type="oauth_client" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.oauth_clients" Member="oauth_clients">
+    <Type Name="oauth_client">
+      <Column Name="id" Type="System.String" DbType="NVarChar(40) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="secret" Type="System.String" DbType="NVarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="auto_approve" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="oauth_client_oauth_client_endpoint" Member="oauth_client_endpoints" ThisKey="id" OtherKey="client_id" Type="oauth_client_endpoint" />
+      <Association Name="oauth_client_oauth_session" Member="oauth_sessions" ThisKey="id" OtherKey="client_id" Type="oauth_session" />
+      <Association Name="oauth_client_oauth_session_refresh_token" Member="oauth_session_refresh_tokens" ThisKey="id" OtherKey="client_id" Type="oauth_session_refresh_token" />
+    </Type>
+  </Table>
+  <Table Name="dbo.oauth_scopes" Member="oauth_scopes">
+    <Type Name="oauth_scope">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="scope" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="oauth_scope_oauth_session_authcode_scope" Member="oauth_session_authcode_scopes" ThisKey="id" OtherKey="scope_id" Type="oauth_session_authcode_scope" />
+      <Association Name="oauth_scope_oauth_session_token_scope" Member="oauth_session_token_scopes" ThisKey="id" OtherKey="scope_id" Type="oauth_session_token_scope" />
+    </Type>
+  </Table>
+  <Table Name="dbo.oauth_session_access_tokens" Member="oauth_session_access_tokens">
+    <Type Name="oauth_session_access_token">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="session_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="access_token" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="access_token_expires" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="oauth_session_access_token_oauth_session_refresh_token" Member="oauth_session_refresh_token" ThisKey="id" OtherKey="session_access_token_id" Type="oauth_session_refresh_token" Cardinality="One" />
+      <Association Name="oauth_session_access_token_oauth_session_token_scope" Member="oauth_session_token_scopes" ThisKey="id" OtherKey="session_access_token_id" Type="oauth_session_token_scope" />
+      <Association Name="oauth_session_oauth_session_access_token" Member="oauth_session" ThisKey="session_id" OtherKey="id" Type="oauth_session" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.oauth_session_authcode_scopes" Member="oauth_session_authcode_scopes">
+    <Type Name="oauth_session_authcode_scope">
+      <Column Name="oauth_session_authcode_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="scope_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="oauth_scope_oauth_session_authcode_scope" Member="oauth_scope" ThisKey="scope_id" OtherKey="id" Type="oauth_scope" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="oauth_session_authcode_oauth_session_authcode_scope" Member="oauth_session_authcode" ThisKey="oauth_session_authcode_id" OtherKey="id" Type="oauth_session_authcode" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.oauth_session_authcodes" Member="oauth_session_authcodes">
+    <Type Name="oauth_session_authcode">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="session_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="auth_code" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="auth_code_expires" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="oauth_session_authcode_oauth_session_authcode_scope" Member="oauth_session_authcode_scope" ThisKey="id" OtherKey="oauth_session_authcode_id" Type="oauth_session_authcode_scope" Cardinality="One" />
+      <Association Name="oauth_session_oauth_session_authcode" Member="oauth_session" ThisKey="session_id" OtherKey="id" Type="oauth_session" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.oauth_session_redirects" Member="oauth_session_redirects">
+    <Type Name="oauth_session_redirect">
+      <Column Name="session_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="redirect_uri" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="oauth_session_oauth_session_redirect" Member="oauth_session" ThisKey="session_id" OtherKey="id" Type="oauth_session" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.oauth_session_refresh_tokens" Member="oauth_session_refresh_tokens">
+    <Type Name="oauth_session_refresh_token">
+      <Column Name="session_access_token_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="refresh_token" Type="System.String" DbType="NVarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="refresh_token_expires" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="client_id" Type="System.String" DbType="NVarChar(40) NOT NULL" CanBeNull="false" />
+      <Association Name="oauth_client_oauth_session_refresh_token" Member="oauth_client" ThisKey="client_id" OtherKey="id" Type="oauth_client" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="oauth_session_access_token_oauth_session_refresh_token" Member="oauth_session_access_token" ThisKey="session_access_token_id" OtherKey="id" Type="oauth_session_access_token" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.oauth_session_token_scopes" Member="oauth_session_token_scopes">
+    <Type Name="oauth_session_token_scope">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="session_access_token_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="scope_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="oauth_scope_oauth_session_token_scope" Member="oauth_scope" ThisKey="scope_id" OtherKey="id" Type="oauth_scope" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="oauth_session_access_token_oauth_session_token_scope" Member="oauth_session_access_token" ThisKey="session_access_token_id" OtherKey="id" Type="oauth_session_access_token" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+</Database>

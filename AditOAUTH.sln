@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AditOAUTH", "AditOAUTH\AditOAUTH.csproj", "{21DDA169-3438-4CCA-8062-80AF03DC25F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AditOAUTH.Server", "AditOAUTH.Server\AditOAUTH.Server.csproj", "{08413E4D-A25D-47DC-8748-FC48A2D4651D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AditOAUTH.UserManagement", "AditOAUTH.UserManagement\AditOAUTH.UserManagement.csproj", "{B7DE667D-BBB8-4F00-82BD-AA434F9EDD0C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{21DDA169-3438-4CCA-8062-80AF03DC25F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21DDA169-3438-4CCA-8062-80AF03DC25F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21DDA169-3438-4CCA-8062-80AF03DC25F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21DDA169-3438-4CCA-8062-80AF03DC25F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08413E4D-A25D-47DC-8748-FC48A2D4651D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08413E4D-A25D-47DC-8748-FC48A2D4651D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08413E4D-A25D-47DC-8748-FC48A2D4651D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08413E4D-A25D-47DC-8748-FC48A2D4651D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7DE667D-BBB8-4F00-82BD-AA434F9EDD0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7DE667D-BBB8-4F00-82BD-AA434F9EDD0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7DE667D-BBB8-4F00-82BD-AA434F9EDD0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7DE667D-BBB8-4F00-82BD-AA434F9EDD0C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
