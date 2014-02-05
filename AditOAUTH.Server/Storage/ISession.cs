@@ -17,6 +17,15 @@ namespace AditOAUTH.Server.Storage
     using System;
     using System.Collections.Generic;
 
+    /// <summary> Enum OwnerType </summary>
+    public enum OwnerType
+    {
+        /// <summary> The user OwnerType </summary>
+        User,
+        /// <summary> The client OwnerType </summary>
+        Client,
+    }
+
     /// <summary> Interface for session </summary>
     public interface ISession
     {
@@ -34,7 +43,7 @@ namespace AditOAUTH.Server.Storage
         /// <param name="ownerType">The type of the session owner (e.g. "user")</param>
         /// <param name="ownerId">The ID of the session owner (e.g. "123")</param>
         /// <returns>System.Int32. The session ID</returns>
-        int CreateSession(string clientId, string ownerType, string ownerId);
+        int CreateSession(string clientId, OwnerType ownerType, string ownerId);
 
         /// <summary>
         ///     Delete a session
@@ -47,7 +56,7 @@ namespace AditOAUTH.Server.Storage
         /// <param name="clientId">The client ID</param>
         /// <param name="ownerType">The type of the session owner (e.g. "user")</param>
         /// <param name="ownerId">The ID of the session owner (e.g. "123")</param>
-        void DeleteSession(string clientId, string ownerType, string ownerId);
+        void DeleteSession(string clientId, OwnerType ownerType, string ownerId);
 
         /// <summary>
         ///     Associate a redirect URI with a session
@@ -303,7 +312,7 @@ namespace AditOAUTH.Server.Storage
         /// <summary> Gets or sets the Owner ID </summary>
         public string OwnerID { get; set; }
         /// <summary> Gets or sets the Owner Type </summary>
-        public string OwnerType { get; set; }
+        public OwnerType OwnerType { get; set; }
     }
 
     /// <summary> Response For ValidateAuthCode </summary>

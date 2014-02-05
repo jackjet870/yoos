@@ -15,9 +15,9 @@
 namespace AditOAUTH.Server.Grant
 {
     using System;
-    using System.Collections.Generic;
-    using Storage;
-    using Util;
+
+    using AditOAUTH.Server.Storage;
+    using AditOAUTH.Server.Util;
 
     /// <summary> Class Implicit. </summary>
     public class Implicit : GrantType
@@ -33,12 +33,12 @@ namespace AditOAUTH.Server.Grant
         /// Complete the client credentials grant
         /// </summary>
         /// <param name="authParams">The authentication parameters.</param>
-        /// <returns>Dictionary{System.StringSystem.Object} information about the completed flow</returns>
-        public override Dictionary<string, object> CompleteFlow(Dictionary<string, object> authParams = null)
+        /// <returns>FlowResult information about the completed flow</returns>
+        public override FlowResult CompleteFlow(dynamic authParams = null)
         {
             if (authParams == null) return null;
             // Remove any old sessions the user might have
-            this.AuthServer.Session.DeleteSession(authParams["client_id"].ToString(), "user", authParams["user_id"].ToString());
+            this.AuthServer.Session.DeleteSession(authParams.client_id, OwnerType.User, authParams.user_id);
 
             // Generate a new access token
             var accessToken = SecureKey.Make();
@@ -47,18 +47,18 @@ namespace AditOAUTH.Server.Grant
             var accessTokenExpires = DateTime.Now.AddSeconds(this.AuthServer.AccessTokenTTL);
 
             // Create a new session
-            var sessionId = this.AuthServer.Session.CreateSession(authParams["client_id"].ToString(), "user", authParams["user_id"].ToString());
+            var sessionId = this.AuthServer.Session.CreateSession(authParams.client_id, OwnerType.User, authParams.user_id);
 
             // Create an access token
             var accessTokenId = this.AuthServer.Session.AssociateAccessToken(sessionId, accessToken, accessTokenExpires);
 
             // Associate scopes with the access token
-            foreach (var scope in (ScopeResponse[])authParams["scopes"])
+            foreach (var scope in authParams.scopes)
             {
                 this.AuthServer.Session.AssociateScope(accessTokenId, scope.ID);
             }
 
-            return new Dictionary<string, object> { { "access_token", accessToken } };
+            return new FlowResult { AccessToken = accessToken };
         }
     }
 }

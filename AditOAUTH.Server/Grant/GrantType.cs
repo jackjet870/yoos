@@ -14,13 +14,13 @@
 
 namespace AditOAUTH.Server.Grant
 {
-    using System.Collections.Generic;
+    using System;
 
     /// <summary> Class GrantType. </summary>
     public abstract class GrantType
     {
         /// <summary>
-        /// Gets the grant identifier (used to validate grant_type in AditOAUTH.Server\Authorization::IssueAccessToken())
+        /// Gets or sets the grant identifier (used to validate grant_type in AditOAUTH.Server\Authorization::IssueAccessToken())
         /// </summary>
         /// <value>The identifier.</value>
         public string Identifier { get; set; }
@@ -40,7 +40,29 @@ namespace AditOAUTH.Server.Grant
         /// Complete the grant flow
         /// </summary>
         /// <param name="inputParams">Null unless the input parameters have been manually set</param>
-        /// <returns>Dictionary{System.StringSystem.Object} with the result</returns>
-        public abstract Dictionary<string, object> CompleteFlow(Dictionary<string, object> inputParams = null);
+        /// <returns>FlowResult with the result</returns>
+        public abstract FlowResult CompleteFlow(dynamic inputParams = null);
+    }
+
+    /// <summary>
+    /// Defines a Flow Result
+    /// </summary>
+    public class FlowResult
+    {
+        /// <summary> Gets the access token. </summary>
+        /// <value>The access token.</value>
+        public string AccessToken { get; internal set; }
+        /// <summary> Gets the type of the token. </summary>
+        /// <value>The type of the token.</value>
+        public string TokenType { get; internal set; }
+        /// <summary> Gets the access token expires. </summary>
+        /// <value>The access token expires.</value>
+        public DateTime AccessTokenExpires { get; internal set; }
+        /// <summary> Gets the expires in. </summary>
+        /// <value>The expires in.</value>
+        public int ExpiresIn { get; internal set; }
+        /// <summary> Gets the refresh token. </summary>
+        /// <value>The refresh token.</value>
+        public string RefreshToken { get; internal set; }
     }
 }

@@ -29,31 +29,31 @@ namespace AditOAUTH.Server
         public string AccessToken { get; private set; }
         /// <summary> Gets the type of the owner of the access token </summary>
         /// <value>The type of the owner</value>
-        public string OwnerType { get; private set; }
+        public OwnerType OwnerType { get; private set; }
         /// <summary> Gets the ID of the owner of the access token </summary>
         /// <value>The owner identifier</value>
         public string OwnerId { get; private set; }
         /// <summary>
         /// The scopes associated with the access token
         /// </summary>
-        private readonly List<string> _sessionScopes = new List<string>();
+        private readonly List<string> sessionScopes = new List<string>();
         /// <summary>
         /// The session storage class
         /// </summary>
-        private readonly ISession _storage;
+        private readonly ISession storage;
         /// <summary> Gets or sets The Request object </summary>
         /// <value>The request</value>
         public IRequest Request { get; set; }
         /// <summary> The query string key which is used by clients to present the access token (default: access_token) </summary>
-        private string _tokenKey = "access_token";
+        private string tokenKey = "access_token";
         /// <summary> Gets or sets the token key </summary>
         /// <value>The token key</value>
-        public string TokenKey { get { return this._tokenKey; } set { this._tokenKey = value; } }
+        public string TokenKey { get { return this.tokenKey; } set { this.tokenKey = value; } }
         /// <summary> Gets the client ID </summary>
         /// <value>The client identifier</value>
         public string ClientId { get; private set; }
         /// <summary> The session ID </summary>
-        private int _sessionId;
+        private int sessionId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Resource"/> class.
@@ -61,7 +61,7 @@ namespace AditOAUTH.Server
         /// <param name="session">The session.</param>
         public Resource(ISession session)
         {
-            this._storage = session;
+            this.storage = session;
         }
 
         /// <summary> Determines whether the specified access token is valid. </summary>
@@ -72,20 +72,20 @@ namespace AditOAUTH.Server
         {
             this.AccessToken = this.DetermineAccessToken(headersOnly);
 
-            var result = this._storage.ValidateAccessToken(this.AccessToken);
+            var result = this.storage.ValidateAccessToken(this.AccessToken);
 
             if (result == null) throw new InvalidAccessTokenException("Access token is not valid");
 
             this.AccessToken = this.AccessToken;
-            this._sessionId = result.SessionID;
+            this.sessionId = result.SessionID;
             this.ClientId = result.ClientID;
             this.OwnerType = result.OwnerType;
             this.OwnerId = result.OwnerID;
 
-            var sss = this._storage.GetScopes(this.AccessToken);
+            var sss = this.storage.GetScopes(this.AccessToken);
             foreach (var scope in sss)
             {
-                this._sessionScopes.Add(scope.Scope);
+                this.sessionScopes.Add(scope.Scope);
             }
 
             return true;
@@ -95,7 +95,7 @@ namespace AditOAUTH.Server
         /// <returns>List{System.String} the scopes</returns>
         public List<string> GetScopes()
         {
-            return this._sessionScopes;
+            return this.sessionScopes;
         }
 
         /**
@@ -110,7 +110,7 @@ namespace AditOAUTH.Server
         /// <returns>Returns true if all scopes are found, false if any fail</returns>
         public bool HasScope(List<string> scopes)
         {
-            return scopes.All(scope => this._sessionScopes.Contains(scope));
+            return scopes.All(scope => this.sessionScopes.Contains(scope));
         }
 
         /// <summary> Checks if the presented access token has the given scope </summary>
@@ -118,7 +118,7 @@ namespace AditOAUTH.Server
         /// <returns>Returns true if the scope is found, false if fail</returns>
         public bool HasScope(string scope)
         {
-            return this._sessionScopes.Contains(scope);
+            return this.sessionScopes.Contains(scope);
         }
 
         /// <summary> Reads in the access token from the headers </summary>

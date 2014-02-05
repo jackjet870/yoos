@@ -36,24 +36,24 @@ namespace AditOAUTH.Server.Grant
 
         /// <summary> Complete the client credentials grant </summary>
         /// <param name="inputParams">The input parameters.</param>
-        /// <returns>Dictionary{System.StringSystem.Object}. with flow details </returns>
+        /// <returns>FlowResult with flow details </returns>
         /// <exception cref="ClientException"> If the flow fails </exception>
-        public override Dictionary<string, object> CompleteFlow(Dictionary<string, object> inputParams = null)
+        public override FlowResult CompleteFlow(dynamic inputParams = null)
         {
             // Get the required params
-            var authParams = this.AuthServer.GetParam(new List<string> { "client_id", "client_secret" }, "post", inputParams);
+            var authParams = this.AuthServer.GetParam(HTTPMethod.Post, inputParams, "client_id", "client_secret");
 
-            if (authParams["client_id"] == null) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "client_id"));
-            if (authParams["client_secret"] == null) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "client_secret"));
+            if (string.IsNullOrEmpty(authParams.client_id)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "client_id"));
+            if (string.IsNullOrEmpty(authParams.client_secret)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "client_secret"));
 
             // Validate client ID and client secret
-            var clientDetails = this.AuthServer.Client.GetClient(authParams["client_id"].ToString(), authParams["client_secret"].ToString(), null, Identifier);
+            var clientDetails = this.AuthServer.Client.GetClient(authParams.client_id, authParams.client_secret, null, Identifier);
             if (clientDetails == null) throw new ClientException(HTTPErrorCollection.Instance["invalid_client"].Message);
 
-            authParams["client_details"] = clientDetails;
+            authParams.client_details = clientDetails;
 
             // Validate any scopes that are in the request
-            var scope = this.AuthServer.GetParam("scope", "post", inputParams, string.Empty).ToString();
+            string scope = this.AuthServer.GetParam("scope", HTTPMethod.Post, inputParams, string.Empty).ToString();
             var scopes = scope.Split(this.AuthServer.ScopeDelimeter);
 
             scopes = scopes.Where(s => !string.IsNullOrEmpty(s)).Select(s => s.Trim()).ToArray();
@@ -67,7 +67,7 @@ namespace AditOAUTH.Server.Grant
             var sr = new List<ScopeResponse>();
             foreach (var s in scopes)
             {
-                var scopeDetails = this.AuthServer.Scope.GetScope(s, authParams["client_id"].ToString(), Identifier);
+                var scopeDetails = this.AuthServer.Scope.GetScope(s, authParams.client_id, Identifier);
 
                 if (scopeDetails == null) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_scope"].Message, scope));
 
@@ -80,7 +80,7 @@ namespace AditOAUTH.Server.Grant
             var accessTokenExpires = DateTime.Now.AddSeconds(accessTokenExpiresIn);
 
             // Create a new session
-            var sessionId = this.AuthServer.Session.CreateSession(authParams["client_id"].ToString(), "client", authParams["client_id"].ToString());
+            var sessionId = this.AuthServer.Session.CreateSession(authParams.client_id, OwnerType.Client, authParams.client_id);
 
             // Add the access token
             var accessTokenId = this.AuthServer.Session.AssociateAccessToken(sessionId, accessToken, accessTokenExpires);
@@ -91,12 +91,12 @@ namespace AditOAUTH.Server.Grant
                 this.AuthServer.Session.AssociateScope(accessTokenId, s.ID);
             }
 
-            return new Dictionary<string, object> 
+            return new FlowResult
             {
-                { "access_token", accessToken },
-                { "token_type", "Bearer" },
-                { "expires", accessTokenExpires },
-                { "expires_in", accessTokenExpiresIn }
+                AccessToken = accessToken,
+                TokenType = "Bearer",
+                AccessTokenExpires = accessTokenExpires,
+                ExpiresIn = accessTokenExpiresIn
             };
         }
     }

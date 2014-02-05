@@ -22,13 +22,13 @@ namespace AditOAUTH.Server.HTTPError
     public class HTTPErrorCollection : CollectionBase
     {
         /// <summary> For singleton, definition of instance </summary>
-        private static volatile HTTPErrorCollection _instance;
+        private static volatile HTTPErrorCollection instance;
 
         /// <summary> Object used for thread safety </summary>
         private static readonly object SyncRoot = new object();
 
         /// <summary> The error list </summary>
-        private readonly List<HTTPError> _errors;
+        private readonly List<HTTPError> errors;
 
         /// <summary> Prevents a default instance of the <see cref="HTTPErrorCollection" /> class from being created </summary>
         private HTTPErrorCollection()
@@ -37,7 +37,7 @@ namespace AditOAUTH.Server.HTTPError
             // No 503 status code for 'temporarily_unavailable', because
             // "a 503 Service Unavailable HTTP status code cannot be
             // returned to the client via an HTTP redirect"
-            this._errors = new List<HTTPError>
+            this.errors = new List<HTTPError>
             {
                 new HTTPError
                 {
@@ -120,14 +120,14 @@ namespace AditOAUTH.Server.HTTPError
         {
             get
             {
-                if (_instance != null) return _instance;
+                if (instance != null) return instance;
                 lock (SyncRoot)
                 {
-                    if (_instance == null)
-                        _instance = new HTTPErrorCollection();
+                    if (instance == null)
+                        instance = new HTTPErrorCollection();
                 }
 
-                return _instance;
+                return instance;
             }
         }
 
@@ -136,7 +136,7 @@ namespace AditOAUTH.Server.HTTPError
         /// <returns>HTTPError based on type </returns>
         public HTTPError this[string type]
         {
-            get { return this._errors.Single(e => e.Type.Equals(type)); }
+            get { return this.errors.Single(e => e.Type.Equals(type)); }
         }
 
         /// <summary> Gets the <see cref="HTTPError" /> with the specified HTTP status code. </summary>
@@ -144,7 +144,7 @@ namespace AditOAUTH.Server.HTTPError
         /// <returns>HTTPError based on type</returns>
         public HTTPError this[int httpStatusCode]
         {
-            get { return this._errors.Single(e => e.HTTPStatusCode.Equals(httpStatusCode)); }
+            get { return this.errors.Single(e => e.HTTPStatusCode.Equals(httpStatusCode)); }
         }
 
         /// <summary> Define HTTPError object </summary>

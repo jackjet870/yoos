@@ -12,49 +12,51 @@
 // <summary></summary>
 // ***********************************************************************
 
-using AditOAUTH.Server.Storage.PDO;
-
 namespace AditOAUTH.Server
 {
     using System;
     using System.Collections.Generic;
     using System.Web;
-    using Exception;
-    using Grant;
-    using HTTPError;
-    using Storage;
-    using Util;
+
+    using AditOAUTH.Server.Exception;
+    using AditOAUTH.Server.Grant;
+    using AditOAUTH.Server.HTTPError;
+    using AditOAUTH.Server.Storage;
+    using AditOAUTH.Server.Storage.PDO;
+    using AditOAUTH.Server.Util;
 
     /// <summary> Definition for Authorization </summary>
     public class Authorization
     {
         /// <summary> The registered grant types </summary>
-        private readonly Dictionary<string, GrantType> _grantTypes = new Dictionary<string, GrantType>();
+        private readonly Dictionary<string, GrantType> grantTypes = new Dictionary<string, GrantType>();
 
         /// <summary> Gets the Client PDO Class </summary>
         /// <value>The client.</value>
         internal IClient Client { get; private set; }
+
         /// <summary> Gets the Session PDO Class </summary>
         /// <value>The session.</value>
         internal ISession Session { get; private set; }
+
         /// <summary> Gets the Scope PDO Class </summary>
         /// <value>The scope.</value>
         internal IScope Scope { get; private set; }
 
         /// <summary> The TTL (time to live) of an access token in seconds (default: 3600) </summary>
-        private int _accessTokenTTL = 3600;
+        private int accessTokenTTL = 3600;
 
         /// <summary> Default scope(s) to be used if none is provided </summary>
-        private string _defaultScope;
+        private string defaultScope;
 
         /// <summary> The request object </summary>
-        private IRequest _request;
+        private IRequest request;
 
         /// <summary>
-        ///     The delimeter between scopes specified in the scope query string parameter
-        ///     The OAuth 2 specification states it should be a space but most use a comma
+        /// The delimeter between scopes specified in the scope query string parameter
+        /// The OAuth 2 specification states it should be a space but most use a comma
         /// </summary>
-        private char _scopeDelimeter = ' ';
+        private char scopeDelimeter = ' ';
 
         /// <summary> Initializes a new instance of the <see cref="Authorization" /> class </summary>
         /// <param name="client"> A class which inherits from Storage/IClient</param>
@@ -73,16 +75,16 @@ namespace AditOAUTH.Server
         /// <value>The scope delimeter</value>
         public char ScopeDelimeter
         {
-            get { return this._scopeDelimeter; }
-            set { this._scopeDelimeter = char.IsSeparator(value) ? ' ' : value; }
+            get { return this.scopeDelimeter; }
+            set { this.scopeDelimeter = char.IsSeparator(value) ? ' ' : value; }
         }
 
         /// <summary> Gets or sets the access token TTL </summary>
         /// <value>The access token TTL</value>
         public int AccessTokenTTL
         {
-            get { return this._accessTokenTTL; }
-            set { this._accessTokenTTL = value; }
+            get { return this.accessTokenTTL; }
+            set { this.accessTokenTTL = value; }
         }
 
         /// <summary> Gets the response types </summary>
@@ -96,8 +98,8 @@ namespace AditOAUTH.Server
         /// <value>The default scope</value>
         public string DefaultScope
         {
-            get { return this._defaultScope; }
-            set { this._defaultScope = string.IsNullOrEmpty(value) ? null : value; }
+            get { return this.defaultScope; }
+            set { this.defaultScope = string.IsNullOrEmpty(value) ? null : value; }
         }
 
         /// <summary> Gets or sets a value indicating whether the require "state" parameter to be in checkAuthoriseParams() </summary>
@@ -108,8 +110,8 @@ namespace AditOAUTH.Server
         /// <value>The request</value>
         public IRequest Request
         {
-            get { return this._request ?? (this._request = Util.Request.BuildFromGlobals()); }
-            set { this._request = value; }
+            get { return this.request ?? (this.request = Util.Request.BuildFromGlobals()); }
+            set { this.request = value; }
         }
 
         /// <summary>Gets all headers that have to be send with the error response </summary>
@@ -150,7 +152,7 @@ namespace AditOAUTH.Server
                     authScheme = "Basic";
                 else
                 {
-                    string authHeader = request.Header("Authorization");
+                    var authHeader = request.Header("Authorization");
                     if (authHeader != null)
                     {
                         if (authHeader.IndexOf("Bearer", StringComparison.Ordinal) == 0)
@@ -180,7 +182,7 @@ namespace AditOAUTH.Server
             // Inject server into grant
             grantType.AuthServer = this;
 
-            this._grantTypes[identifier] = grantType;
+            this.grantTypes[identifier] = grantType;
 
             if (!string.IsNullOrEmpty(grantType.ResponseType))
             {
@@ -193,22 +195,22 @@ namespace AditOAUTH.Server
         /// <returns>Returns "true" if enabled, "false" if not.</returns>
         public bool HasGrantType(string identifier)
         {
-            return this._grantTypes.ContainsKey(identifier);
+            return this.grantTypes.ContainsKey(identifier);
         }
 
         /// <summary> Issues the access token </summary>
         /// <param name="inputParams">The input parameters</param>
-        /// <returns>Dictionary{System.StringSystem.Object}. the access token</returns>
+        /// <returns>FlowResult with the access token</returns>
         /// <exception cref="ClientException"> Various exceptions </exception>
-        public Dictionary<string, object> IssueAccessToken(Dictionary<string, object> inputParams = null)
+        public FlowResult IssueAccessToken(Parameters inputParams = null)
         {
-            var grantType = this.GetParam("grant_type", "post", inputParams).ToString();
+            var grantType = this.GetParam("grant_type", HTTPMethod.Post, inputParams).ToString();
 
             if (string.IsNullOrEmpty(grantType))
                 throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "grant_type"));
 
             // Ensure grant type is one that is recognised and is enabled
-            if (!this._grantTypes.ContainsKey(grantType))
+            if (!this.grantTypes.ContainsKey(grantType))
                 throw new ClientException(string.Format(HTTPErrorCollection.Instance["unsupported_grant_type"].Message, grantType));
 
             // Complete the flow
@@ -221,9 +223,9 @@ namespace AditOAUTH.Server
         /// <exception cref="InvalidGrantTypeException">Thrown if grant type is invalid</exception>
         public GrantType GetGrantType(string grantType)
         {
-            if (this._grantTypes[grantType] != null)
+            if (this.grantTypes[grantType] != null)
             {
-                return this._grantTypes[grantType];
+                return this.grantTypes[grantType];
             }
 
             throw new InvalidGrantTypeException(string.Format(HTTPErrorCollection.Instance["unsupported_grant_type"].Message, grantType));
@@ -235,11 +237,11 @@ namespace AditOAUTH.Server
         /// <param name="inputParams">Passed input parameters</param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>System.String. "Null" if parameter is missing</returns>
-        public object GetParam(string parameter, string method = "get", Dictionary<string, object> inputParams = null, object defaultValue = null)
+        public object GetParam(string parameter, HTTPMethod method = HTTPMethod.Get, Parameters inputParams = null, object defaultValue = null)
         {
-            if (inputParams != null && inputParams.ContainsKey(parameter))
+            if (inputParams != null && inputParams.GetType().GetProperty(parameter) != null)
             {
-                return inputParams[parameter].ToString();
+                return inputParams.GetType().GetProperty(parameter).GetValue(parameter);
             }
 
             if (parameter == "client_id" && this.Request != null && !string.IsNullOrEmpty(this.Request.Server("AUTH_USER")))
@@ -252,37 +254,39 @@ namespace AditOAUTH.Server
                 return this.Request.Server("AUTH_PASSWORD");
             }
 
-            switch (method.ToLower())
+            if (this.Request == null) return null;
+
+            switch (method)
             {
-                case "get":
-                    return this.Request == null ? null : this.Request.Get(parameter, defaultValue != null ? defaultValue.ToString() : null);
-                case "post":
-                    return this.Request == null ? null : this.Request.Post(parameter, defaultValue != null ? defaultValue.ToString() : null);
-                case "cookie":
-                    return this.Request == null ? null : this.Request.Cookie(parameter, (HttpCookie)defaultValue);
-                case "file":
-                    return this.Request == null ? null : this.Request.File(parameter, (HttpPostedFile)defaultValue);
-                case "server":
-                    return this.Request == null ? null : this.Request.Server(parameter, defaultValue != null ? defaultValue.ToString() : null);
-                case "header":
-                    return this.Request == null ? null : this.Request.Header(parameter, defaultValue != null ? defaultValue.ToString() : null);
+                case HTTPMethod.Get:
+                    return this.Request.Get(parameter, defaultValue != null ? defaultValue.ToString() : null);
+                case HTTPMethod.Post:
+                    return this.Request.Post(parameter, defaultValue != null ? defaultValue.ToString() : null);
+                case HTTPMethod.Cookie:
+                    return this.Request.Cookie(parameter, (HttpCookie)defaultValue);
+                case HTTPMethod.File:
+                    return this.Request.File(parameter, (HttpPostedFile)defaultValue);
+                case HTTPMethod.Server:
+                    return this.Request.Server(parameter, defaultValue != null ? defaultValue.ToString() : null);
+                case HTTPMethod.Header:
+                    return this.Request.Header(parameter, defaultValue != null ? defaultValue.ToString() : null);
                 default:
                     return null;
             }
         }
 
         /// <summary> Get a parameter from passed input parameters </summary>
-        /// <param name="parameter">Required parameters</param>
-        /// <param name="method">Get / put / post / delete</param>
-        /// <param name="inputParams">Passed input parameters</param>
-        /// <param name="defaultValue">The default value</param>
-        /// <returns>NameValueCollection "Null" if parameter is missing</returns>
-        public Dictionary<string, object> GetParam(List<string> parameter, string method = "get", Dictionary<string, object> inputParams = null, string defaultValue = null)
+        /// <param name="method"> Get / put / post / delete </param>
+        /// <param name="inputParams"> Passed input parameters </param>
+        /// <param name="defaultValue"> The default value </param>
+        /// <param name="parameter"> Required parameters </param>
+        /// <returns> NameValueCollection "Null" if parameter is missing </returns>
+        public dynamic GetParam(HTTPMethod method = HTTPMethod.Get, Parameters inputParams = null, string defaultValue = null, params string[] parameter)
         {
-            var response = new Dictionary<string, object>();
+            var response = new Parameters();
             foreach (var p in parameter)
             {
-                response[p] = this.GetParam(p, method, inputParams);
+                response.GetType().GetProperty(p).SetValue(parameter, this.GetParam(p, method, inputParams));
             }
 
             return response;

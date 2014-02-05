@@ -43,16 +43,15 @@ namespace AditOAUTH.Server.Storage.PDO
         ///     or
         ///     ownerId
         /// </exception>
-        public int CreateSession(string clientId, string ownerType, string ownerId)
+        public int CreateSession(string clientId, OwnerType ownerType, string ownerId)
         {
             int session;
             if (string.IsNullOrEmpty(clientId)) throw new ArgumentException("clientId");
-            if (string.IsNullOrEmpty(ownerType)) throw new ArgumentException("ownerType");
             if (string.IsNullOrEmpty(ownerId)) throw new ArgumentException("ownerId");
             // INSERT INTO oauth_sessions (client_id, owner_type,  owner_id) VALUE (:clientId, :ownerType, :ownerId)
             using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
             {
-                var os = new oauth_session { client_id = clientId, owner_type = ownerType, owner_id = ownerId };
+                var os = new oauth_session { client_id = clientId, owner_type = ownerType.ToString(), owner_id = ownerId };
                 adc.oauth_sessions.InsertOnSubmit(os);
                 adc.SubmitChanges();
                 session = os.id;
@@ -79,15 +78,14 @@ namespace AditOAUTH.Server.Storage.PDO
         ///     or
         ///     ownerId
         /// </exception>
-        public void DeleteSession(string clientId, string ownerType, string ownerId)
+        public void DeleteSession(string clientId, OwnerType ownerType, string ownerId)
         {
             if (string.IsNullOrEmpty(clientId)) throw new ArgumentException("clientId");
-            if (string.IsNullOrEmpty(ownerType)) throw new ArgumentException("ownerType");
             if (string.IsNullOrEmpty(ownerId)) throw new ArgumentException("ownerId");
             // DELETE FROM oauth_sessions WHERE client_id = :clientId AND owner_type = :type AND owner_id = :typeId
             using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
             {
-                var os = adc.oauth_sessions.SingleOrDefault(o => o.client_id == clientId && o.owner_type == ownerType && o.owner_id == ownerId);
+                var os = adc.oauth_sessions.SingleOrDefault(o => o.client_id == clientId && o.owner_type == ownerType.ToString() && o.owner_id == ownerId);
                 if (os == null) return;
                 adc.oauth_sessions.DeleteOnSubmit(os);
                 adc.SubmitChanges();
@@ -386,7 +384,7 @@ namespace AditOAUTH.Server.Storage.PDO
                                    SessionID = osat.session_id,
                                    ClientID = os.client_id,
                                    OwnerID = os.owner_id,
-                                   OwnerType = os.owner_type
+                                   OwnerType = (OwnerType)Enum.Parse(typeof(OwnerType), os.owner_type)
                                };
 
                 if (validate.Count() > 1) throw new Exception("Too many result in Session[ValidateAccessToken]");

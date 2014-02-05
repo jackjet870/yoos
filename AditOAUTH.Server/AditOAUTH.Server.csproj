@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
@@ -37,36 +38,88 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authorization.cs" />
-    <Compile Include="Exception\ClientException.cs" />
-    <Compile Include="Exception\InvalidAccessTokenException.cs" />
-    <Compile Include="Exception\InvalidGrantTypeException.cs" />
-    <Compile Include="Exception\OAuth2Exception.cs" />
-    <Compile Include="Grant\AuthCode.cs" />
-    <Compile Include="Grant\ClientCredentials.cs" />
-    <Compile Include="Grant\GrantType.cs" />
-    <Compile Include="Grant\Implicit.cs" />
-    <Compile Include="Grant\Password.cs" />
-    <Compile Include="Grant\RefreshToken.cs" />
-    <Compile Include="HTTPError\HTTPErrorCollection.cs" />
+    <Compile Include="Authorization.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Exception\ClientException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Exception\InvalidAccessTokenException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Exception\InvalidGrantTypeException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Exception\OAuth2Exception.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Grant\AuthCode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Grant\ClientCredentials.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Grant\GrantType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Grant\Implicit.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Grant\Password.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Grant\RefreshToken.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HTTPError\HTTPErrorCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Resource.cs" />
-    <Compile Include="Storage\ISession.cs" />
-    <Compile Include="Storage\IScope.cs" />
-    <Compile Include="Storage\IClient.cs" />
-    <Compile Include="Storage\PDO\Client.cs" />
-    <Compile Include="Storage\PDO\Db.cs" />
-    <Compile Include="Storage\PDO\Scope.cs" />
-    <Compile Include="Storage\PDO\Session.cs" />
-    <Compile Include="Util\IRequest.cs" />
-    <Compile Include="Util\RedirectUri.cs" />
-    <Compile Include="Util\Request.cs" />
-    <Compile Include="Util\SecureKey.cs" />
+    <Compile Include="Resource.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Storage\IClient.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Storage\IScope.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Storage\ISession.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Storage\PDO\Client.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Storage\PDO\Db.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Storage\PDO\Scope.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Storage\PDO\Session.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\IRequest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\HTTPMethod.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\RedirectUri.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\Request.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\SecureKey.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="_Data\AditOAUTH.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -74,6 +127,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -83,9 +140,6 @@
       <LastGenOutput>AditOAUTH.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
     <None Include="_Data\AditOAUTH.dbml.layout">

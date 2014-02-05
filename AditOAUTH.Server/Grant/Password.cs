@@ -41,32 +41,32 @@ namespace AditOAUTH.Server.Grant
         ///     Complete the password grant
         /// </summary>
         /// <param name="inputParams">The input parameters</param>
-        /// <returns>System.Collections.Generic.Dictionary{System.String,System.Object} the completed flow</returns>
-        public override Dictionary<string, object> CompleteFlow(Dictionary<string, object> inputParams = null)
+        /// <returns>FlowResult the completed flow</returns>
+        public override FlowResult CompleteFlow(dynamic inputParams = null)
         {
             // Get the required params
-            var authParams = this.AuthServer.GetParam(new List<string> { "client_id", "client_secret", "username", "password" }, "post", inputParams);
+            var authParams = this.AuthServer.GetParam(HTTPMethod.Post, inputParams, "client_id", "client_secret", "username", "password");
 
-            if (authParams["client_id"] == null) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "client_id"));
-            if (authParams["client_secret"] == null) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "client_secret"));
+            if (string.IsNullOrEmpty(authParams.client_id)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "client_id"));
+            if (string.IsNullOrEmpty(authParams.client_secret)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "client_secret"));
 
             // Validate client credentials
-            var clientDetails = this.AuthServer.Client.GetClient(authParams["client_id"].ToString(), authParams["client_secret"].ToString(), null, Identifier);
+            var clientDetails = this.AuthServer.Client.GetClient(authParams.client_id, authParams.client_secret, null, Identifier);
             if (clientDetails == null) throw new ClientException(HTTPErrorCollection.Instance["invalid_client"].Message);
 
-            authParams["client_details"] = clientDetails;
+            authParams.client_details = clientDetails;
 
-            if (authParams["username"] == null) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "username"));
-            if (authParams["password"] == null) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "password"));
+            if (string.IsNullOrEmpty(authParams.username)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "username"));
+            if (string.IsNullOrEmpty(authParams.password)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "password"));
 
             // Check if user"s username and password are correct
             if (this.VerifyCredentialsCallback == null) throw new InvalidGrantTypeException("Null or non-callable callback set");
-            var userId = this.VerifyCredentialsCallback(authParams["username"].ToString(), authParams["password"].ToString());
+            var userId = this.VerifyCredentialsCallback(authParams.username, authParams.password);
 
             if (string.IsNullOrEmpty(userId)) throw new ClientException(HTTPErrorCollection.Instance["invalid_credentials"].Message);
 
             // Validate any scopes that are in the request
-            var scope = this.AuthServer.GetParam("scope", "post", inputParams, string.Empty).ToString();
+            string scope = this.AuthServer.GetParam("scope", HTTPMethod.Post, inputParams, string.Empty).ToString();
             var scopes = scope.Split(this.AuthServer.ScopeDelimeter);
             scopes = scopes.Where(s => !string.IsNullOrEmpty(s)).Select(s => s.Trim()).ToArray();
 
@@ -80,15 +80,13 @@ namespace AditOAUTH.Server.Grant
 
             var sr = new List<ScopeResponse>();
 
-            foreach (var s in scopes)
+            foreach (var scopeDetails in scopes.Select(s => this.AuthServer.Scope.GetScope(s, authParams.client_id, this.Identifier)))
             {
-                var scopeDetails = this.AuthServer.Scope.GetScope(s, authParams["client_id"].ToString(), Identifier);
-
                 if (scopeDetails == null) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_scope"].Message, scope));
                 sr.Add(scopeDetails);
             }
 
-            authParams["scopes"] = sr;
+            authParams.scopes = sr;
 
             // Generate an access token
             var accessToken = SecureKey.Make();
@@ -96,7 +94,7 @@ namespace AditOAUTH.Server.Grant
             var accessTokenExpires = DateTime.Now.AddSeconds(accessTokenExpiresIn);
 
             // Create a new session
-            var sessionId = this.AuthServer.Session.CreateSession(authParams["client_id"].ToString(), "user", userId);
+            var sessionId = this.AuthServer.Session.CreateSession(authParams.client_id, OwnerType.User, userId);
 
             // Associate an access token with the session
             var accessTokenId = this.AuthServer.Session.AssociateAccessToken(sessionId, accessToken, accessTokenExpires);
@@ -107,12 +105,12 @@ namespace AditOAUTH.Server.Grant
                 this.AuthServer.Session.AssociateScope(accessTokenId, s.ID);
             }
 
-            var response = new Dictionary<string, object>
+            var response = new FlowResult
             {
-                { "access_token", accessToken },
-                { "token_type", "Bearer" },
-                { "expires", accessTokenExpires },
-                { "expires_in", accessTokenExpiresIn }
+                AccessToken = accessToken,
+                TokenType = "Bearer",
+                AccessTokenExpires = accessTokenExpires,
+                ExpiresIn = accessTokenExpiresIn
             };
 
             // Associate a refresh token if set
@@ -120,8 +118,8 @@ namespace AditOAUTH.Server.Grant
             {
                 var refreshToken = SecureKey.Make();
                 var refreshTokenTTL = DateTime.Now.AddSeconds(((RefreshToken)this.AuthServer.GetGrantType("refresh_token")).RefreshTokenTTL);
-                this.AuthServer.Session.AssociateRefreshToken(accessTokenId, refreshToken, refreshTokenTTL, authParams["client_id"].ToString());
-                response.Add("refresh_token", refreshToken);
+                this.AuthServer.Session.AssociateRefreshToken(accessTokenId, refreshToken, refreshTokenTTL, authParams.client_id);
+                response.RefreshToken = refreshToken;
             }
 
             return response;

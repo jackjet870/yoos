@@ -22,8 +22,8 @@ namespace AditOAUTH.Server._Data
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="ADITOAUTH")]
-	internal partial class AditOAUTHDataContext : System.Data.Linq.DataContext
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="AditOAUTH")]
+	public partial class AditOAUTHDataContext : System.Data.Linq.DataContext
 	{
 		
 		private static System.Data.Linq.Mapping.MappingSource mappingSource = new AttributeMappingSource();
@@ -62,14 +62,37 @@ namespace AditOAUTH.Server._Data
     partial void Deleteoauth_session_token_scope(oauth_session_token_scope instance);
     #endregion
 		
+		public AditOAUTHDataContext() : 
+				base(global::AditOAUTH.Server.Properties.Settings.Default.AditOAUTHConnectionString, mappingSource)
+		{
+			OnCreated();
+		}
 		
-		internal AditOAUTHDataContext(string connection) : 
+		public AditOAUTHDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		internal System.Data.Linq.Table<oauth_client_endpoint> oauth_client_endpoints
+		public AditOAUTHDataContext(System.Data.IDbConnection connection) : 
+				base(connection, mappingSource)
+		{
+			OnCreated();
+		}
+		
+		public AditOAUTHDataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+				base(connection, mappingSource)
+		{
+			OnCreated();
+		}
+		
+		public AditOAUTHDataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+				base(connection, mappingSource)
+		{
+			OnCreated();
+		}
+		
+		public System.Data.Linq.Table<oauth_client_endpoint> oauth_client_endpoints
 		{
 			get
 			{
@@ -77,7 +100,7 @@ namespace AditOAUTH.Server._Data
 			}
 		}
 		
-		internal System.Data.Linq.Table<oauth_session> oauth_sessions
+		public System.Data.Linq.Table<oauth_session> oauth_sessions
 		{
 			get
 			{
@@ -85,7 +108,7 @@ namespace AditOAUTH.Server._Data
 			}
 		}
 		
-		internal System.Data.Linq.Table<oauth_client> oauth_clients
+		public System.Data.Linq.Table<oauth_client> oauth_clients
 		{
 			get
 			{
@@ -93,7 +116,7 @@ namespace AditOAUTH.Server._Data
 			}
 		}
 		
-		internal System.Data.Linq.Table<oauth_scope> oauth_scopes
+		public System.Data.Linq.Table<oauth_scope> oauth_scopes
 		{
 			get
 			{
@@ -101,7 +124,7 @@ namespace AditOAUTH.Server._Data
 			}
 		}
 		
-		internal System.Data.Linq.Table<oauth_session_access_token> oauth_session_access_tokens
+		public System.Data.Linq.Table<oauth_session_access_token> oauth_session_access_tokens
 		{
 			get
 			{
@@ -109,7 +132,7 @@ namespace AditOAUTH.Server._Data
 			}
 		}
 		
-		internal System.Data.Linq.Table<oauth_session_authcode_scope> oauth_session_authcode_scopes
+		public System.Data.Linq.Table<oauth_session_authcode_scope> oauth_session_authcode_scopes
 		{
 			get
 			{
@@ -117,7 +140,7 @@ namespace AditOAUTH.Server._Data
 			}
 		}
 		
-		internal System.Data.Linq.Table<oauth_session_authcode> oauth_session_authcodes
+		public System.Data.Linq.Table<oauth_session_authcode> oauth_session_authcodes
 		{
 			get
 			{
@@ -125,7 +148,7 @@ namespace AditOAUTH.Server._Data
 			}
 		}
 		
-		internal System.Data.Linq.Table<oauth_session_redirect> oauth_session_redirects
+		public System.Data.Linq.Table<oauth_session_redirect> oauth_session_redirects
 		{
 			get
 			{
@@ -133,7 +156,7 @@ namespace AditOAUTH.Server._Data
 			}
 		}
 		
-		internal System.Data.Linq.Table<oauth_session_refresh_token> oauth_session_refresh_tokens
+		public System.Data.Linq.Table<oauth_session_refresh_token> oauth_session_refresh_tokens
 		{
 			get
 			{
@@ -141,7 +164,7 @@ namespace AditOAUTH.Server._Data
 			}
 		}
 		
-		internal System.Data.Linq.Table<oauth_session_token_scope> oauth_session_token_scopes
+		public System.Data.Linq.Table<oauth_session_token_scope> oauth_session_token_scopes
 		{
 			get
 			{
@@ -151,7 +174,7 @@ namespace AditOAUTH.Server._Data
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.oauth_client_endpoints")]
-	internal partial class oauth_client_endpoint : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class oauth_client_endpoint : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -188,14 +211,14 @@ namespace AditOAUTH.Server._Data
     partial void Onuri_pathChanged();
     #endregion
 		
-		internal oauth_client_endpoint()
+		public oauth_client_endpoint()
 		{
 			this._oauth_client = default(EntityRef<oauth_client>);
 			OnCreated();
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		internal int id
+		public int id
 		{
 			get
 			{
@@ -215,7 +238,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_client_id", DbType="NVarChar(40) NOT NULL", CanBeNull=false)]
-		internal string client_id
+		public string client_id
 		{
 			get
 			{
@@ -239,7 +262,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_uri_protocol", DbType="NVarChar(5) NOT NULL", CanBeNull=false)]
-		internal string uri_protocol
+		public string uri_protocol
 		{
 			get
 			{
@@ -259,7 +282,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_uri_domain", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
-		internal string uri_domain
+		public string uri_domain
 		{
 			get
 			{
@@ -279,7 +302,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_uri_port", DbType="Int")]
-		internal System.Nullable<int> uri_port
+		public System.Nullable<int> uri_port
 		{
 			get
 			{
@@ -299,7 +322,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_uri_path", DbType="NVarChar(MAX)")]
-		internal string uri_path
+		public string uri_path
 		{
 			get
 			{
@@ -319,7 +342,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_client_oauth_client_endpoint", Storage="_oauth_client", ThisKey="client_id", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		internal oauth_client oauth_client
+		public oauth_client oauth_client
 		{
 			get
 			{
@@ -374,7 +397,7 @@ namespace AditOAUTH.Server._Data
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.oauth_sessions")]
-	internal partial class oauth_session : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class oauth_session : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -409,7 +432,7 @@ namespace AditOAUTH.Server._Data
     partial void Onowner_idChanged();
     #endregion
 		
-		internal oauth_session()
+		public oauth_session()
 		{
 			this._oauth_session_access_tokens = new EntitySet<oauth_session_access_token>(new Action<oauth_session_access_token>(this.attach_oauth_session_access_tokens), new Action<oauth_session_access_token>(this.detach_oauth_session_access_tokens));
 			this._oauth_session_authcodes = new EntitySet<oauth_session_authcode>(new Action<oauth_session_authcode>(this.attach_oauth_session_authcodes), new Action<oauth_session_authcode>(this.detach_oauth_session_authcodes));
@@ -419,7 +442,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		internal int id
+		public int id
 		{
 			get
 			{
@@ -439,7 +462,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_client_id", DbType="NVarChar(40) NOT NULL", CanBeNull=false)]
-		internal string client_id
+		public string client_id
 		{
 			get
 			{
@@ -463,7 +486,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_owner_type", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
-		internal string owner_type
+		public string owner_type
 		{
 			get
 			{
@@ -483,7 +506,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_owner_id", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
-		internal string owner_id
+		public string owner_id
 		{
 			get
 			{
@@ -503,7 +526,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_session_oauth_session_access_token", Storage="_oauth_session_access_tokens", ThisKey="id", OtherKey="session_id")]
-		internal EntitySet<oauth_session_access_token> oauth_session_access_tokens
+		public EntitySet<oauth_session_access_token> oauth_session_access_tokens
 		{
 			get
 			{
@@ -516,7 +539,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_session_oauth_session_authcode", Storage="_oauth_session_authcodes", ThisKey="id", OtherKey="session_id")]
-		internal EntitySet<oauth_session_authcode> oauth_session_authcodes
+		public EntitySet<oauth_session_authcode> oauth_session_authcodes
 		{
 			get
 			{
@@ -529,7 +552,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_session_oauth_session_redirect", Storage="_oauth_session_redirect", ThisKey="id", OtherKey="session_id", IsUnique=true, IsForeignKey=false)]
-		internal oauth_session_redirect oauth_session_redirect
+		public oauth_session_redirect oauth_session_redirect
 		{
 			get
 			{
@@ -558,7 +581,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_client_oauth_session", Storage="_oauth_client", ThisKey="client_id", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		internal oauth_client oauth_client
+		public oauth_client oauth_client
 		{
 			get
 			{
@@ -637,7 +660,7 @@ namespace AditOAUTH.Server._Data
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.oauth_clients")]
-	internal partial class oauth_client : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class oauth_client : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -670,7 +693,7 @@ namespace AditOAUTH.Server._Data
     partial void Onauto_approveChanged();
     #endregion
 		
-		internal oauth_client()
+		public oauth_client()
 		{
 			this._oauth_client_endpoints = new EntitySet<oauth_client_endpoint>(new Action<oauth_client_endpoint>(this.attach_oauth_client_endpoints), new Action<oauth_client_endpoint>(this.detach_oauth_client_endpoints));
 			this._oauth_sessions = new EntitySet<oauth_session>(new Action<oauth_session>(this.attach_oauth_sessions), new Action<oauth_session>(this.detach_oauth_sessions));
@@ -679,7 +702,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", DbType="NVarChar(40) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		internal string id
+		public string id
 		{
 			get
 			{
@@ -699,7 +722,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_secret", DbType="NVarChar(40) NOT NULL", CanBeNull=false)]
-		internal string secret
+		public string secret
 		{
 			get
 			{
@@ -719,7 +742,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
-		internal string name
+		public string name
 		{
 			get
 			{
@@ -739,7 +762,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_auto_approve", DbType="Bit NOT NULL")]
-		internal bool auto_approve
+		public bool auto_approve
 		{
 			get
 			{
@@ -759,7 +782,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_client_oauth_client_endpoint", Storage="_oauth_client_endpoints", ThisKey="id", OtherKey="client_id")]
-		internal EntitySet<oauth_client_endpoint> oauth_client_endpoints
+		public EntitySet<oauth_client_endpoint> oauth_client_endpoints
 		{
 			get
 			{
@@ -772,7 +795,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_client_oauth_session", Storage="_oauth_sessions", ThisKey="id", OtherKey="client_id")]
-		internal EntitySet<oauth_session> oauth_sessions
+		public EntitySet<oauth_session> oauth_sessions
 		{
 			get
 			{
@@ -785,7 +808,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_client_oauth_session_refresh_token", Storage="_oauth_session_refresh_tokens", ThisKey="id", OtherKey="client_id")]
-		internal EntitySet<oauth_session_refresh_token> oauth_session_refresh_tokens
+		public EntitySet<oauth_session_refresh_token> oauth_session_refresh_tokens
 		{
 			get
 			{
@@ -798,8 +821,8 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		public event PropertyChangingEventHandler PropertyChanging;
-
-        public event PropertyChangedEventHandler PropertyChanged;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
 		
 		protected virtual void SendPropertyChanging()
 		{
@@ -855,7 +878,7 @@ namespace AditOAUTH.Server._Data
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.oauth_scopes")]
-	internal partial class oauth_scope : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class oauth_scope : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -886,7 +909,7 @@ namespace AditOAUTH.Server._Data
     partial void OndescriptionChanged();
     #endregion
 		
-		internal oauth_scope()
+		public oauth_scope()
 		{
 			this._oauth_session_authcode_scopes = new EntitySet<oauth_session_authcode_scope>(new Action<oauth_session_authcode_scope>(this.attach_oauth_session_authcode_scopes), new Action<oauth_session_authcode_scope>(this.detach_oauth_session_authcode_scopes));
 			this._oauth_session_token_scopes = new EntitySet<oauth_session_token_scope>(new Action<oauth_session_token_scope>(this.attach_oauth_session_token_scopes), new Action<oauth_session_token_scope>(this.detach_oauth_session_token_scopes));
@@ -894,7 +917,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		internal int id
+		public int id
 		{
 			get
 			{
@@ -914,7 +937,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_scope", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
-		internal string scope
+		public string scope
 		{
 			get
 			{
@@ -934,7 +957,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
-		internal string name
+		public string name
 		{
 			get
 			{
@@ -954,7 +977,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_description", DbType="NVarChar(MAX)")]
-		internal string description
+		public string description
 		{
 			get
 			{
@@ -974,7 +997,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_scope_oauth_session_authcode_scope", Storage="_oauth_session_authcode_scopes", ThisKey="id", OtherKey="scope_id")]
-		internal EntitySet<oauth_session_authcode_scope> oauth_session_authcode_scopes
+		public EntitySet<oauth_session_authcode_scope> oauth_session_authcode_scopes
 		{
 			get
 			{
@@ -987,7 +1010,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_scope_oauth_session_token_scope", Storage="_oauth_session_token_scopes", ThisKey="id", OtherKey="scope_id")]
-		internal EntitySet<oauth_session_token_scope> oauth_session_token_scopes
+		public EntitySet<oauth_session_token_scope> oauth_session_token_scopes
 		{
 			get
 			{
@@ -1045,7 +1068,7 @@ namespace AditOAUTH.Server._Data
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.oauth_session_access_tokens")]
-	internal partial class oauth_session_access_token : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class oauth_session_access_token : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -1078,7 +1101,7 @@ namespace AditOAUTH.Server._Data
     partial void Onaccess_token_expiresChanged();
     #endregion
 		
-		internal oauth_session_access_token()
+		public oauth_session_access_token()
 		{
 			this._oauth_session_refresh_token = default(EntityRef<oauth_session_refresh_token>);
 			this._oauth_session_token_scopes = new EntitySet<oauth_session_token_scope>(new Action<oauth_session_token_scope>(this.attach_oauth_session_token_scopes), new Action<oauth_session_token_scope>(this.detach_oauth_session_token_scopes));
@@ -1087,7 +1110,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		internal int id
+		public int id
 		{
 			get
 			{
@@ -1107,7 +1130,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_session_id", DbType="Int NOT NULL")]
-		internal int session_id
+		public int session_id
 		{
 			get
 			{
@@ -1131,7 +1154,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_access_token", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
-		internal string access_token
+		public string access_token
 		{
 			get
 			{
@@ -1151,7 +1174,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_access_token_expires", DbType="DateTime NOT NULL")]
-		internal System.DateTime access_token_expires
+		public System.DateTime access_token_expires
 		{
 			get
 			{
@@ -1171,7 +1194,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_session_access_token_oauth_session_refresh_token", Storage="_oauth_session_refresh_token", ThisKey="id", OtherKey="session_access_token_id", IsUnique=true, IsForeignKey=false)]
-		internal oauth_session_refresh_token oauth_session_refresh_token
+		public oauth_session_refresh_token oauth_session_refresh_token
 		{
 			get
 			{
@@ -1200,7 +1223,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_session_access_token_oauth_session_token_scope", Storage="_oauth_session_token_scopes", ThisKey="id", OtherKey="session_access_token_id")]
-		internal EntitySet<oauth_session_token_scope> oauth_session_token_scopes
+		public EntitySet<oauth_session_token_scope> oauth_session_token_scopes
 		{
 			get
 			{
@@ -1213,7 +1236,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_session_oauth_session_access_token", Storage="_oauth_session", ThisKey="session_id", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		internal oauth_session oauth_session
+		public oauth_session oauth_session
 		{
 			get
 			{
@@ -1280,7 +1303,7 @@ namespace AditOAUTH.Server._Data
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.oauth_session_authcode_scopes")]
-	internal partial class oauth_session_authcode_scope : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class oauth_session_authcode_scope : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -1303,7 +1326,7 @@ namespace AditOAUTH.Server._Data
     partial void Onscope_idChanged();
     #endregion
 		
-		internal oauth_session_authcode_scope()
+		public oauth_session_authcode_scope()
 		{
 			this._oauth_scope = default(EntityRef<oauth_scope>);
 			this._oauth_session_authcode = default(EntityRef<oauth_session_authcode>);
@@ -1311,7 +1334,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_oauth_session_authcode_id", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		internal int oauth_session_authcode_id
+		public int oauth_session_authcode_id
 		{
 			get
 			{
@@ -1335,7 +1358,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_scope_id", DbType="Int NOT NULL")]
-		internal int scope_id
+		public int scope_id
 		{
 			get
 			{
@@ -1359,7 +1382,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_scope_oauth_session_authcode_scope", Storage="_oauth_scope", ThisKey="scope_id", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		internal oauth_scope oauth_scope
+		public oauth_scope oauth_scope
 		{
 			get
 			{
@@ -1393,7 +1416,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_session_authcode_oauth_session_authcode_scope", Storage="_oauth_session_authcode", ThisKey="oauth_session_authcode_id", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		internal oauth_session_authcode oauth_session_authcode
+		public oauth_session_authcode oauth_session_authcode
 		{
 			get
 			{
@@ -1448,7 +1471,7 @@ namespace AditOAUTH.Server._Data
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.oauth_session_authcodes")]
-	internal partial class oauth_session_authcode : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class oauth_session_authcode : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -1479,7 +1502,7 @@ namespace AditOAUTH.Server._Data
     partial void Onauth_code_expiresChanged();
     #endregion
 		
-		internal oauth_session_authcode()
+		public oauth_session_authcode()
 		{
 			this._oauth_session_authcode_scope = default(EntityRef<oauth_session_authcode_scope>);
 			this._oauth_session = default(EntityRef<oauth_session>);
@@ -1487,7 +1510,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		internal int id
+		public int id
 		{
 			get
 			{
@@ -1507,7 +1530,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_session_id", DbType="Int NOT NULL")]
-		internal int session_id
+		public int session_id
 		{
 			get
 			{
@@ -1531,7 +1554,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_auth_code", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
-		internal string auth_code
+		public string auth_code
 		{
 			get
 			{
@@ -1551,7 +1574,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_auth_code_expires", DbType="DateTime NOT NULL")]
-		internal System.DateTime auth_code_expires
+		public System.DateTime auth_code_expires
 		{
 			get
 			{
@@ -1571,7 +1594,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_session_authcode_oauth_session_authcode_scope", Storage="_oauth_session_authcode_scope", ThisKey="id", OtherKey="oauth_session_authcode_id", IsUnique=true, IsForeignKey=false)]
-		internal oauth_session_authcode_scope oauth_session_authcode_scope
+		public oauth_session_authcode_scope oauth_session_authcode_scope
 		{
 			get
 			{
@@ -1600,7 +1623,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_session_oauth_session_authcode", Storage="_oauth_session", ThisKey="session_id", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		internal oauth_session oauth_session
+		public oauth_session oauth_session
 		{
 			get
 			{
@@ -1655,7 +1678,7 @@ namespace AditOAUTH.Server._Data
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.oauth_session_redirects")]
-	internal partial class oauth_session_redirect : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class oauth_session_redirect : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -1676,14 +1699,14 @@ namespace AditOAUTH.Server._Data
     partial void Onredirect_uriChanged();
     #endregion
 		
-		internal oauth_session_redirect()
+		public oauth_session_redirect()
 		{
 			this._oauth_session = default(EntityRef<oauth_session>);
 			OnCreated();
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_session_id", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		internal int session_id
+		public int session_id
 		{
 			get
 			{
@@ -1707,7 +1730,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_redirect_uri", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		internal string redirect_uri
+		public string redirect_uri
 		{
 			get
 			{
@@ -1727,7 +1750,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_session_oauth_session_redirect", Storage="_oauth_session", ThisKey="session_id", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		internal oauth_session oauth_session
+		public oauth_session oauth_session
 		{
 			get
 			{
@@ -1782,7 +1805,7 @@ namespace AditOAUTH.Server._Data
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.oauth_session_refresh_tokens")]
-	internal partial class oauth_session_refresh_token : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class oauth_session_refresh_token : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -1813,7 +1836,7 @@ namespace AditOAUTH.Server._Data
     partial void Onclient_idChanged();
     #endregion
 		
-		internal oauth_session_refresh_token()
+		public oauth_session_refresh_token()
 		{
 			this._oauth_client = default(EntityRef<oauth_client>);
 			this._oauth_session_access_token = default(EntityRef<oauth_session_access_token>);
@@ -1821,7 +1844,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_session_access_token_id", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		internal int session_access_token_id
+		public int session_access_token_id
 		{
 			get
 			{
@@ -1845,7 +1868,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_refresh_token", DbType="NVarChar(40) NOT NULL", CanBeNull=false)]
-		internal string refresh_token
+		public string refresh_token
 		{
 			get
 			{
@@ -1865,7 +1888,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_refresh_token_expires", DbType="DateTime NOT NULL")]
-		internal System.DateTime refresh_token_expires
+		public System.DateTime refresh_token_expires
 		{
 			get
 			{
@@ -1885,7 +1908,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_client_id", DbType="NVarChar(40) NOT NULL", CanBeNull=false)]
-		internal string client_id
+		public string client_id
 		{
 			get
 			{
@@ -1909,7 +1932,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_client_oauth_session_refresh_token", Storage="_oauth_client", ThisKey="client_id", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		internal oauth_client oauth_client
+		public oauth_client oauth_client
 		{
 			get
 			{
@@ -1943,7 +1966,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_session_access_token_oauth_session_refresh_token", Storage="_oauth_session_access_token", ThisKey="session_access_token_id", OtherKey="id", IsForeignKey=true)]
-		internal oauth_session_access_token oauth_session_access_token
+		public oauth_session_access_token oauth_session_access_token
 		{
 			get
 			{
@@ -1998,7 +2021,7 @@ namespace AditOAUTH.Server._Data
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.oauth_session_token_scopes")]
-	internal partial class oauth_session_token_scope : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class oauth_session_token_scope : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -2025,7 +2048,7 @@ namespace AditOAUTH.Server._Data
     partial void Onscope_idChanged();
     #endregion
 		
-		internal oauth_session_token_scope()
+		public oauth_session_token_scope()
 		{
 			this._oauth_scope = default(EntityRef<oauth_scope>);
 			this._oauth_session_access_token = default(EntityRef<oauth_session_access_token>);
@@ -2033,7 +2056,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		internal int id
+		public int id
 		{
 			get
 			{
@@ -2053,7 +2076,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_session_access_token_id", DbType="Int")]
-		internal System.Nullable<int> session_access_token_id
+		public System.Nullable<int> session_access_token_id
 		{
 			get
 			{
@@ -2077,7 +2100,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_scope_id", DbType="Int NOT NULL")]
-		internal int scope_id
+		public int scope_id
 		{
 			get
 			{
@@ -2101,7 +2124,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_scope_oauth_session_token_scope", Storage="_oauth_scope", ThisKey="scope_id", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		internal oauth_scope oauth_scope
+		public oauth_scope oauth_scope
 		{
 			get
 			{
@@ -2135,7 +2158,7 @@ namespace AditOAUTH.Server._Data
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="oauth_session_access_token_oauth_session_token_scope", Storage="_oauth_session_access_token", ThisKey="session_access_token_id", OtherKey="id", IsForeignKey=true, DeleteRule="CASCADE")]
-		internal oauth_session_access_token oauth_session_access_token
+		public oauth_session_access_token oauth_session_access_token
 		{
 			get
 			{

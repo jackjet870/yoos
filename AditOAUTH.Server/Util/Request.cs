@@ -17,26 +17,27 @@ namespace AditOAUTH.Server.Util
     using System.Collections.Specialized;
     using System.Text.RegularExpressions;
     using System.Web;
+
     /// <summary> Defines a Request object </summary>
     public class Request : IRequest
     {
         /// <summary> The _cookies </summary>
-        private readonly HttpCookieCollection _cookies;
+        private readonly HttpCookieCollection cookies;
 
         /// <summary> The _files </summary>
-        private readonly HttpFileCollection _files;
+        private readonly HttpFileCollection files;
 
         /// <summary> The _get </summary>
-        private readonly NameValueCollection _get;
+        private readonly NameValueCollection get;
 
         /// <summary> The _headers </summary>
-        private readonly NameValueCollection _headers;
+        private readonly NameValueCollection headers;
 
         /// <summary> The _post </summary>
-        private readonly NameValueCollection _post;
+        private readonly NameValueCollection post;
 
         /// <summary> The _server </summary>
-        private readonly NameValueCollection _server;
+        private readonly NameValueCollection server;
 
         /// <summary> Initializes a new instance of the <see cref="Request" /> class. </summary>
         /// <param name="get">The get</param>
@@ -47,13 +48,13 @@ namespace AditOAUTH.Server.Util
         /// <param name="headers">The headers</param>
         public Request(NameValueCollection get = null, NameValueCollection post = null, HttpCookieCollection cookies = null, HttpFileCollection files = null, NameValueCollection server = null, NameValueCollection headers = null)
         {
-            this._get = get ?? new NameValueCollection();
-            this._post = post ?? new NameValueCollection();
-            this._cookies = cookies ?? new HttpCookieCollection();
-            this._files = files;
-            this._server = server ?? new NameValueCollection();
+            this.get = get ?? new NameValueCollection();
+            this.post = post ?? new NameValueCollection();
+            this.cookies = cookies ?? new HttpCookieCollection();
+            this.files = files;
+            this.server = server ?? new NameValueCollection();
 
-            if (headers == null) this._headers = this.ReadHeaders();
+            if (headers == null) this.headers = this.ReadHeaders();
         }
 
         /// <summary> Gets the specified index from get server variable. </summary>
@@ -62,7 +63,7 @@ namespace AditOAUTH.Server.Util
         /// <returns>String representing the value from the server variable at index</returns>
         public string Get(string index, string defaultValue = null)
         {
-            return this._get[index] ?? defaultValue;
+            return this.get[index] ?? defaultValue;
         }
 
         /// <summary> Gets the specified index from post server variable </summary>
@@ -71,7 +72,7 @@ namespace AditOAUTH.Server.Util
         /// <returns>String representing the value from the server variable at index</returns>
         public string Post(string index, string defaultValue = null)
         {
-            return this._post[index] ?? defaultValue;
+            return this.post[index] ?? defaultValue;
         }
 
         /// <summary> Gets the specified index from cookies server variable </summary>
@@ -80,7 +81,7 @@ namespace AditOAUTH.Server.Util
         /// <returns>HttpCookie representing the value from the server variable at index</returns>
         public HttpCookie Cookie(string index, HttpCookie defaultValue = null)
         {
-            return this._cookies[index] ?? defaultValue;
+            return this.cookies[index] ?? defaultValue;
         }
 
         /// <summary> Gets the specified index from files server variable. </summary>
@@ -89,7 +90,7 @@ namespace AditOAUTH.Server.Util
         /// <returns>System.Object representing the value from the server variable at index</returns>
         public HttpPostedFile File(string index, HttpPostedFile defaultValue = null)
         {
-            return this._files[index] ?? defaultValue;
+            return this.files[index] ?? defaultValue;
         }
 
         /// <summary> Get the specified index from server server variable </summary>
@@ -98,7 +99,7 @@ namespace AditOAUTH.Server.Util
         /// <returns>System.Object representing the value from the server variable at index</returns>
         public string Server(string index, string defaultValue = null)
         {
-            return this._server[index] ?? defaultValue;
+            return this.server[index] ?? defaultValue;
         }
 
         /// <summary> Headers the specified index from header server variable </summary>
@@ -107,7 +108,7 @@ namespace AditOAUTH.Server.Util
         /// <returns>System.Object representing the value from the server variable at index</returns>
         public string Header(string index, string defaultValue = null)
         {
-            return this._headers[index] ?? defaultValue;
+            return this.headers[index] ?? defaultValue;
         }
 
         /// <summary> Builds from globals server variables </summary>
@@ -125,7 +126,7 @@ namespace AditOAUTH.Server.Util
         private NameValueCollection ReadHeaders()
         {
             var headers = new NameValueCollection();
-            foreach (string kv in this._server)
+            foreach (string kv in this.server)
             {
                 if (kv.Substring(0, 5).ToLower() != "http_") continue;
                 var name = kv.Substring(5);
@@ -133,7 +134,7 @@ namespace AditOAUTH.Server.Util
                 name = name.Replace('_', ' ');
                 name = name.ToLower();
                 Regex.Replace(name, "(?:^|\\s)\\w", m => m.Value.ToUpper());
-                headers[name] = this._server[kv];
+                headers[name] = this.server[kv];
             }
 
             return headers;

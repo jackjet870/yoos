@@ -18,7 +18,7 @@ namespace AditOAUTH.Server.Storage.PDO
     public static class Db
     {
         /// <summary> The private connectionstring var </summary>
-        private static string _connectionstring;
+        private static string connectionstring;
 
         /// <summary> Gets or sets the connection string. </summary>
         /// <value>The connection string</value>
@@ -27,12 +27,15 @@ namespace AditOAUTH.Server.Storage.PDO
         {
             get
             {
-                if (string.IsNullOrEmpty(_connectionstring))
+                if (string.IsNullOrEmpty(connectionstring))
                     throw new System.Exception("Connectionstring is not present");
-                return _connectionstring;
-
+                return connectionstring;
             }
-            set { _connectionstring = value; }
+
+            set
+            {
+                connectionstring = value;
+            }
         }
     }
 }
