@@ -14,6 +14,8 @@
 
 namespace AditOAUTH.Server.Storage
 {
+    using AditOAUTH.Server.Grant;
+
     /// <summary> Interface IClient </summary>
     public interface IClient
     {
@@ -53,7 +55,7 @@ namespace AditOAUTH.Server.Storage
         /// <param name="redirectUri">The client's redirect URI (default = null)</param>
         /// <param name="grantType">The grant type used in the request (default = null)</param>
         /// <returns>Returns null if the validation fails, ClientResponse on success</returns>
-        ClientResponse GetClient(string clientId, string clientSecret = null, string redirectUri = null, string grantType = null);
+        ClientResponse GetClient(GrantTypIdentifier grantType, string clientId, string clientSecret = null, string redirectUri = null);
     }
 
     /// <summary> Defines a Client Response </summary>

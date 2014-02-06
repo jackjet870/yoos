@@ -16,6 +16,9 @@ namespace AditOAUTH.Server.Storage.PDO
 {
     using System;
     using System.Linq;
+
+    using AditOAUTH.Server.Grant;
+
     using _Data;
 
     /// <summary> Defines a Client Object </summary>
@@ -57,7 +60,7 @@ namespace AditOAUTH.Server.Storage.PDO
         /// <param name="redirectUri">The client's redirect URI (default = null)</param>
         /// <param name="grantType">The grant type used in the request (default = null)</param>
         /// <returns>Returns null if the validation fails, ClientResponse on success</returns>
-        public ClientResponse GetClient(string clientId, string clientSecret = null, string redirectUri = null, string grantType = null)
+        public ClientResponse GetClient(GrantTypIdentifier grantType, string clientId, string clientSecret = null, string redirectUri = null)
         {
             Uri uri = null;
             if (string.IsNullOrEmpty(clientId)) throw new ArgumentException("clientId");

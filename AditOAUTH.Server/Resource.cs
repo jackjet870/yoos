@@ -17,6 +17,9 @@ namespace AditOAUTH.Server
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
+
+    using AditOAUTH.Server.HTTPError;
+
     using Exception;
     using Storage;
     using Util;
@@ -74,7 +77,7 @@ namespace AditOAUTH.Server
 
             var result = this.storage.ValidateAccessToken(this.AccessToken);
 
-            if (result == null) throw new InvalidAccessTokenException("Access token is not valid");
+            if (result == null) throw new InvalidAccessTokenException(HTTPErrorType.invalid_access_token);
 
             this.AccessToken = this.AccessToken;
             this.sessionId = result.SessionID;
@@ -172,8 +175,7 @@ namespace AditOAUTH.Server
             }
 
             if (string.IsNullOrEmpty(this.AccessToken))
-                throw new InvalidAccessTokenException("Access token is missing");
-
+                throw new InvalidAccessTokenException(HTTPErrorType.missing_access_token);
             return this.AccessToken;
         }
     }

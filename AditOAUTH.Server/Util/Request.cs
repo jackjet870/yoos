@@ -125,7 +125,7 @@ namespace AditOAUTH.Server.Util
         /// <returns>NameValueCollection of the headers</returns>
         private NameValueCollection ReadHeaders()
         {
-            var headers = new NameValueCollection();
+            var rh = new NameValueCollection();
             foreach (string kv in this.server)
             {
                 if (kv.Substring(0, 5).ToLower() != "http_") continue;
@@ -134,10 +134,10 @@ namespace AditOAUTH.Server.Util
                 name = name.Replace('_', ' ');
                 name = name.ToLower();
                 Regex.Replace(name, "(?:^|\\s)\\w", m => m.Value.ToUpper());
-                headers[name] = this.server[kv];
+                rh[name] = this.server[kv];
             }
 
-            return headers;
+            return rh;
         }
     }
 }

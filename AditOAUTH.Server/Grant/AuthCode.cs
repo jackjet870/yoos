@@ -22,14 +22,16 @@ namespace AditOAUTH.Server.Grant
     using Storage;
     using Util;
 
+    using Type = AditOAUTH.Server.HTTPError.HTTPErrorType;
+
     /// <summary> OAuth 2.0 Auth code grant </summary>
     public class AuthCode : GrantType
     {
         /// <summary> Initializes a new instance of the <see cref="AuthCode"/> class. </summary>
         public AuthCode()
         {
-            this.Identifier = "authorization_code";
-            this.ResponseType = "code";
+            this.Identifier = GrantTypIdentifier.AuthorizationCode;
+            this.ResponseType = ResponseTypeIdentifier.Code;
         }
 
         /// <summary> Gets or sets override the default access token expire time </summary>
@@ -57,27 +59,27 @@ namespace AditOAUTH.Server.Grant
             // Auth params
             var authParams = this.AuthServer.GetParam(HTTPMethod.Get, inputParams, "client_id", "redirect_uri", "response_type", "scope", "state");
 
-            if (string.IsNullOrEmpty(authParams.client_id)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "client_id"));
-            if (string.IsNullOrEmpty(authParams.redirect_uri)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "redirect_uri"));
-            if (this.AuthServer.RequireStateParam && string.IsNullOrEmpty(authParams.state)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "state"));
+            if (string.IsNullOrEmpty(authParams.client_id)) throw new ClientException(HTTPErrorType.invalid_request, "client_id");
+            if (string.IsNullOrEmpty(authParams.redirect_uri)) throw new ClientException(HTTPErrorType.invalid_request, "redirect_uri");
+            if (this.AuthServer.RequireStateParam && string.IsNullOrEmpty(authParams.state)) throw new ClientException(HTTPErrorType.invalid_request, "state");
 
             // Validate client ID and redirect URI
-            var clientDetails = this.AuthServer.Client.GetClient(authParams.client_id, null, authParams.redirect_uri, Identifier);
-            if (clientDetails == null) throw new ClientException(HTTPErrorCollection.Instance["invalid_client"].Message);
+            var clientDetails = this.AuthServer.Client.GetClient(Identifier, authParams.client_id, null, authParams.redirect_uri);
+            if (clientDetails == null) throw new ClientException(HTTPErrorType.invalid_client);
 
             authParams.client_details = clientDetails;
 
-            if (string.IsNullOrEmpty(authParams.response_type)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "response_type"));
+            if (string.IsNullOrEmpty(authParams.response_type)) throw new ClientException(HTTPErrorType.invalid_request, "response_type");
 
             // Ensure response type is one that is recognised
-            if (!this.AuthServer.ResponseTypes.Contains(authParams.response_type)) throw new ClientException(HTTPErrorCollection.Instance["unsupported_response_type"].Message);
+            if (!this.AuthServer.ResponseTypes.Contains(authParams.response_type)) throw new ClientException(HTTPErrorType.unsupported_response_type);
 
             // Validate scopes
             string[] scopes = authParams.scope.Split(this.AuthServer.ScopeDelimeter);
             scopes = scopes.Where(s => !string.IsNullOrEmpty(s)).Select(s => s.Trim()).ToArray();
 
             if (this.AuthServer.RequireScopeParam && this.AuthServer.DefaultScope == null && scopes.Length == 0)
-                throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "scope"));
+                throw new ClientException(HTTPErrorType.invalid_request, "scope");
 
             if (scopes.Length == 0 && this.AuthServer.DefaultScope != null)
                 scopes = this.AuthServer.DefaultScope.Split(this.AuthServer.ScopeDelimeter);
@@ -85,8 +87,8 @@ namespace AditOAUTH.Server.Grant
             var sr = new List<ScopeResponse>();
             foreach (var s in scopes)
             {
-                var scopeDetails = this.AuthServer.Scope.GetScope(s, authParams.client_id, Identifier);
-                if (scopeDetails == null) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_scope"].Message, s));
+                var scopeDetails = this.AuthServer.Scope.GetScope(Identifier, s, authParams.client_id);
+                if (scopeDetails == null) throw new ClientException(HTTPErrorType.invalid_scope, s);
                 sr.Add(scopeDetails);
             }
 
@@ -136,22 +138,22 @@ namespace AditOAUTH.Server.Grant
             // Get the required params
             var authParams = this.AuthServer.GetParam(HTTPMethod.Post, inputParams, "client_id", "client_secret", "redirect_uri", "code");
 
-            if (string.IsNullOrEmpty(authParams.client_id)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "client_id"));
-            if (string.IsNullOrEmpty(authParams.client_secret)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "client_secret"));
-            if (string.IsNullOrEmpty(authParams.redirect_uri)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "redirect_uri"));
+            if (string.IsNullOrEmpty(authParams.client_id)) throw new ClientException(HTTPErrorType.invalid_request, "client_id");
+            if (string.IsNullOrEmpty(authParams.client_secret)) throw new ClientException(HTTPErrorType.invalid_request, "client_secret");
+            if (string.IsNullOrEmpty(authParams.redirect_uri)) throw new ClientException(HTTPErrorType.invalid_request, "redirect_uri");
 
             // Validate client ID and redirect URI
-            var clientDetails = this.AuthServer.Client.GetClient(authParams.client_id, authParams.client_secret, authParams.redirect_uri, Identifier);
-            if (clientDetails == null) throw new ClientException(HTTPErrorCollection.Instance["invalid_client"].Message);
+            var clientDetails = this.AuthServer.Client.GetClient(Identifier, authParams.client_id, authParams.client_secret, authParams.redirect_uri);
+            if (clientDetails == null) throw new ClientException(HTTPErrorType.invalid_client);
 
             authParams.client_details = clientDetails;
 
             // Validate the authorization code
-            if (string.IsNullOrEmpty(authParams.code)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "code"));
+            if (string.IsNullOrEmpty(authParams.code)) throw new ClientException(HTTPErrorType.invalid_request, "code");
 
             // Verify the authorization code matches the client_id and the request_uri
             var authCodeDetails = this.AuthServer.Session.ValidateAuthCode(authParams.client_id, authParams.redirect_uri, authParams.code);
-            if (authCodeDetails == null) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_grant"].Message, "code"));
+            if (authCodeDetails == null) throw new ClientException(HTTPErrorType.invalid_grant, "code");
 
             // Get any associated scopes
             var scopes = this.AuthServer.Session.GetAuthCodeScopes(authCodeDetails.AuthcodeID);
@@ -185,10 +187,10 @@ namespace AditOAUTH.Server.Grant
             };
 
             // Associate a refresh token if set
-            if (this.AuthServer.HasGrantType("refresh_token"))
+            if (this.AuthServer.HasGrantType(GrantTypIdentifier.RefreshToken))
             {
                 var refreshToken = SecureKey.Make();
-                var refreshTokenTTL = DateTime.Now.AddSeconds(((RefreshToken)this.AuthServer.GetGrantType("refresh_token")).RefreshTokenTTL);
+                var refreshTokenTTL = DateTime.Now.AddSeconds(((RefreshToken)this.AuthServer.GetGrantType(GrantTypIdentifier.RefreshToken)).RefreshTokenTTL);
                 this.AuthServer.Session.AssociateRefreshToken(accessTokenId, refreshToken, refreshTokenTTL, authParams.client_id);
                 response.RefreshToken = refreshToken;
             }

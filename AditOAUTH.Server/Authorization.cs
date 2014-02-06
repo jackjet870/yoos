@@ -29,7 +29,7 @@ namespace AditOAUTH.Server
     public class Authorization
     {
         /// <summary> The registered grant types </summary>
-        private readonly Dictionary<string, GrantType> grantTypes = new Dictionary<string, GrantType>();
+        private readonly Dictionary<GrantTypIdentifier, GrantType> grantTypes = new Dictionary<GrantTypIdentifier, GrantType>();
 
         /// <summary> Gets the Client PDO Class </summary>
         /// <value>The client.</value>
@@ -89,7 +89,7 @@ namespace AditOAUTH.Server
 
         /// <summary> Gets the response types </summary>
         /// <value>The response types</value>
-        public string ResponseTypes { get; private set; }
+        public List<ResponseTypeIdentifier> ResponseTypes { get; private set; }
 
         /// <summary> Gets or sets a value indicating whether the "scope" parameter to be in checkAuthoriseParams() </summary>
         public bool RequireScopeParam { get; set; }
@@ -117,7 +117,7 @@ namespace AditOAUTH.Server
         /// <summary>Gets all headers that have to be send with the error response </summary>
         /// <param name="error">The error message key</param>
         /// <returns>List{System.String} with header values</returns>
-        public static List<string> GetExceptionHttpHeaders(string error)
+        public static List<string> GetExceptionHttpHeaders(HTTPErrorType error)
         {
             var headers = new List<string>();
             switch (HTTPErrorCollection.Instance[error].HTTPStatusCode)
@@ -144,7 +144,7 @@ namespace AditOAUTH.Server
             // respond with an HTTP 401 (Unauthorized) status code and
             // include the "WWW-Authenticate" response header field
             // matching the authentication scheme used by the client.
-            if (error == "invalid_client")
+            if (error == HTTPErrorType.invalid_client)
             {
                 string authScheme = null;
                 var request = new Request();
@@ -172,28 +172,25 @@ namespace AditOAUTH.Server
         /// <summary> Enable support for a grant </summary>
         /// <param name="grantType">A grant class which conforms to Grant/IGrantType</param>
         /// <param name="identifier">An identifier for the grant (autodetected if not passed)</param>
-        public void AddGrantType(GrantType grantType, string identifier = null)
+        public void AddGrantType(GrantType grantType, GrantTypIdentifier? identifier = null)
         {
-            if (string.IsNullOrEmpty(identifier))
-            {
-                identifier = grantType.Identifier;
-            }
+            if (!identifier.HasValue) identifier = grantType.Identifier;
 
             // Inject server into grant
             grantType.AuthServer = this;
 
-            this.grantTypes[identifier] = grantType;
+            this.grantTypes[identifier.Value] = grantType;
 
-            if (!string.IsNullOrEmpty(grantType.ResponseType))
-            {
-                this.ResponseTypes = grantType.ResponseType;
-            }
+            if (!grantType.ResponseType.HasValue) return;
+
+            if (this.ResponseTypes == null) this.ResponseTypes = new List<ResponseTypeIdentifier>();
+            this.ResponseTypes.Add(grantType.ResponseType.Value);
         }
 
         /// <summary> Check if a grant type has been enabled </summary>
         /// <param name="identifier">The grant type identifier</param>
         /// <returns>Returns "true" if enabled, "false" if not.</returns>
-        public bool HasGrantType(string identifier)
+        public bool HasGrantType(GrantTypIdentifier identifier)
         {
             return this.grantTypes.ContainsKey(identifier);
         }
@@ -204,14 +201,13 @@ namespace AditOAUTH.Server
         /// <exception cref="ClientException"> Various exceptions </exception>
         public FlowResult IssueAccessToken(Parameters inputParams = null)
         {
-            var grantType = this.GetParam("grant_type", HTTPMethod.Post, inputParams).ToString();
-
-            if (string.IsNullOrEmpty(grantType))
-                throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "grant_type"));
+            GrantTypIdentifier grantType;
+            if (Enum.TryParse(this.GetParam("grant_type", HTTPMethod.Post, inputParams).ToString(), out grantType) == false)
+                throw new ClientException(HTTPErrorType.invalid_request, "grant_type");
 
             // Ensure grant type is one that is recognised and is enabled
             if (!this.grantTypes.ContainsKey(grantType))
-                throw new ClientException(string.Format(HTTPErrorCollection.Instance["unsupported_grant_type"].Message, grantType));
+                throw new ClientException(HTTPErrorType.unsupported_grant_type, grantType.ToString());
 
             // Complete the flow
             return this.GetGrantType(grantType).CompleteFlow(inputParams);
@@ -221,14 +217,14 @@ namespace AditOAUTH.Server
         /// <param name="grantType">The grant type identifer</param>
         /// <returns>Grant\AuthCode or Grant\ClientCredentials or Grant\Implict or Grant\Password or Grant\RefreshToken</returns>
         /// <exception cref="InvalidGrantTypeException">Thrown if grant type is invalid</exception>
-        public GrantType GetGrantType(string grantType)
+        public GrantType GetGrantType(GrantTypIdentifier grantType)
         {
             if (this.grantTypes[grantType] != null)
             {
                 return this.grantTypes[grantType];
             }
 
-            throw new InvalidGrantTypeException(string.Format(HTTPErrorCollection.Instance["unsupported_grant_type"].Message, grantType));
+            throw new InvalidGrantTypeException(HTTPErrorType.unsupported_grant_type, grantType.ToString());
         }
 
         /// <summary> Get a parameter from passed input parameters </summary>

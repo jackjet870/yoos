@@ -15,6 +15,9 @@
 namespace AditOAUTH.Server.Storage.PDO
 {
     using System.Linq;
+
+    using AditOAUTH.Server.Grant;
+
     using _Data;
 
     /// <summary> Class Scope. </summary>
@@ -25,7 +28,7 @@ namespace AditOAUTH.Server.Storage.PDO
         /// <param name="clientId">The client ID (default = null)</param>
         /// <param name="grantType">The grant type used in the request (default = null)</param>
         /// <returns>If the scope doesn't exist return null</returns>
-        public ScopeResponse GetScope(string scope, string clientId = null, string grantType = null)
+        public ScopeResponse GetScope( GrantTypIdentifier grantType, string scope, string clientId = null)
         {
             ScopeResponse sr = null;
             using (var adc = new AditOAUTHDataContext(Db.ConnectionString))

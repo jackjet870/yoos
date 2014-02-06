@@ -16,6 +16,30 @@ namespace AditOAUTH.Server.Grant
 {
     using System;
 
+    /// <summary> Grant Typ Identifier Enum </summary>
+    public enum GrantTypIdentifier
+    {
+        /// <summary> Authorization code grant type </summary>
+        AuthorizationCode,
+        /// <summary> Client credentials grant type </summary>
+        ClientCredentials,
+        /// <summary> Implicit grant type </summary>
+        Implicit,
+        /// <summary> Password grant type </summary>
+        Password,
+        /// <summary> Refresh_token grant type </summary>
+        RefreshToken
+    }
+
+    /// <summary> Response Type Identifier Enum </summary>
+    public enum ResponseTypeIdentifier
+    {
+        /// <summary> Code response type </summary>
+        Code,
+        /// <summary>Token response type </summary>
+        Token,
+    }
+
     /// <summary> Class GrantType. </summary>
     public abstract class GrantType
     {
@@ -23,12 +47,12 @@ namespace AditOAUTH.Server.Grant
         /// Gets or sets the grant identifier (used to validate grant_type in AditOAUTH.Server\Authorization::IssueAccessToken())
         /// </summary>
         /// <value>The identifier.</value>
-        public string Identifier { get; set; }
+        public GrantTypIdentifier Identifier { get; set; }
         /// <summary>
         /// Gets the response type (used to validate response_type in AditOAUTH.Server\Grant\AuthCode::CheckAuthoriseParams())
         /// </summary>
         /// <value>The type of the response.</value>
-        public string ResponseType { get; internal set; }
+        public ResponseTypeIdentifier? ResponseType { get; internal set; }
 
         /// <summary>
         /// Gets or sets the AuthServer instance

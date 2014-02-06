@@ -28,7 +28,7 @@ namespace AditOAUTH.Server.Grant
         /// <summary> Initializes a new instance of the <see cref="RefreshToken"/> class. </summary>
         public RefreshToken()
         {
-            this.Identifier = "refresh_token";
+            this.Identifier = GrantTypIdentifier.RefreshToken;
         }
 
         /// <summary> Gets or sets override the default access token expire time </summary>
@@ -50,21 +50,21 @@ namespace AditOAUTH.Server.Grant
             // Get the required params
             var authParams = this.AuthServer.GetParam(HTTPMethod.Post, inputParams, "client_id", "client_secret", "refresh_token", "scope");
 
-            if (string.IsNullOrEmpty(authParams.client_id)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "client_id"));
-            if (string.IsNullOrEmpty(authParams.client_secret)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "client_secret"));
+            if (string.IsNullOrEmpty(authParams.client_id)) throw new ClientException(HTTPErrorType.invalid_request, "client_id");
+            if (string.IsNullOrEmpty(authParams.client_secret)) throw new ClientException(HTTPErrorType.invalid_request, "client_secret");
 
             // Validate client ID and client secret
-            var clientDetails = this.AuthServer.Client.GetClient(authParams.client_id, authParams.client_secret, null, Identifier);
+            var clientDetails = this.AuthServer.Client.GetClient(Identifier, authParams.client_id, authParams.client_secret);
 
-            if (clientDetails == null) throw new ClientException(HTTPErrorCollection.Instance["invalid_client"].Message);
+            if (clientDetails == null) throw new ClientException(HTTPErrorType.invalid_client);
 
             authParams.client_details = clientDetails;
 
-            if (string.IsNullOrEmpty(authParams.refresh_token)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "refresh_token"));
+            if (string.IsNullOrEmpty(authParams.refresh_token)) throw new ClientException(HTTPErrorType.invalid_request, "refresh_token");
 
             // Validate refresh token
             var accessTokenId = this.AuthServer.Session.ValidateRefreshToken(authParams.refresh_token, authParams.client_id);
-            if (accessTokenId == 0) throw new ClientException(HTTPErrorCollection.Instance["invalid_refresh"].Message);
+            if (accessTokenId == 0) throw new ClientException(HTTPErrorType.invalid_refresh);
 
             // Get the existing access token
             var accessTokenDetails = this.AuthServer.Session.GetAccessToken(accessTokenId);
@@ -113,10 +113,10 @@ namespace AditOAUTH.Server.Grant
 
                 foreach (var reqScope in reqestedScopes)
                 {
-                    if (!existingScopes.Contains(reqScope)) throw new ClientException(string.Format(HTTPErrorCollection.Instance["invalid_request"].Message, "scope"));
+                    if (!existingScopes.Contains(reqScope)) throw new ClientException(HTTPErrorType.invalid_request, "scope");
 
                     // Associate with the new access token
-                    var scopeDetails = this.AuthServer.Scope.GetScope(reqScope, authParams.client_id, Identifier);
+                    var scopeDetails = this.AuthServer.Scope.GetScope(Identifier, reqScope, authParams.client_id);
                     this.AuthServer.Session.AssociateScope(newAccessTokenId, scopeDetails.ID);
                 }
             }

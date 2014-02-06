@@ -14,6 +14,8 @@
 
 namespace AditOAUTH.Server.Storage
 {
+    using AditOAUTH.Server.Grant;
+
     /// <summary> Interface IScope </summary>
     public interface IScope
     {
@@ -35,11 +37,11 @@ namespace AditOAUTH.Server.Storage
         /// )
         /// </code>
         /// </summary>
+        /// <param name="grantType">The grant type used in the request (default = null)</param>
         /// <param name="scope">The scope</param>
         /// <param name="clientId">The client ID (default = null)</param>
-        /// <param name="grantType">The grant type used in the request (default = null)</param>
         /// <returns>If the scope doesn't exist return null</returns>
-        ScopeResponse GetScope(string scope, string clientId = null, string grantType = null);
+        ScopeResponse GetScope(GrantTypIdentifier grantType, string scope, string clientId = null);
     }
 
     /// <summary> Defines a Client Response </summary>
