@@ -14,11 +14,44 @@
 
 namespace AditOAUTH.Server.Exception
 {
+    using AditOAUTH.Server.HTTPError;
+
     /// <summary> Class InvalidGrantTypeException </summary>
     public class InvalidGrantTypeException : OAuth2Exception
     {
-        /// <summary> Initializes a new instance of the <see cref="InvalidGrantTypeException"/> class </summary>
-        /// <param name="message">The message to visualize</param>
-        public InvalidGrantTypeException(string message) : base(message) { }
+        /// <summary> Gets the error type. </summary>
+        /// <value>The error type.</value>
+        public HTTPErrorType Type { get; internal set; }
+        /// <summary> Gets a message that describes the current exception. </summary>
+        /// <value>The message.</value>
+        /// <returns>The error message that explains the reason for the exception, or an empty string("").</returns>
+        public new string Message { get; internal set; }
+        /// <summary> Gets the HTTP error code. </summary>
+        /// <value>The code.</value>
+        public int Code { get; internal set; }
+
+        /// <summary> The error collection  </summary>
+        private static HTTPErrorCollection.HTTPError err;
+
+        /// <summary> Initializes a new instance of the <see cref="InvalidGrantTypeException" /> class </summary>
+        /// <param name="type">Http Error type.</param>
+        /// <param name="property">The property which caused the exception.</param>
+        public InvalidGrantTypeException(HTTPErrorType type, string property = null)
+            : base(FormatMessage(property))
+        {
+            err = HTTPErrorCollection.Instance[type];
+            this.Type = err.Type;
+            this.Message = FormatMessage(property);
+            this.Code = err.HTTPStatusCode;
+        }
+
+        /// <summary> Formats the message for error output
+        /// </summary>
+        /// <param name="property">The property which caused the exception.</param>
+        /// <returns>System.String with the formatted message</returns>
+        private static string FormatMessage(string property)
+        {
+            return string.Format(err.Message, property);
+        }
     }
 }
