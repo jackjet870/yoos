@@ -14,8 +14,12 @@
 
 namespace AditOAUTH.Server
 {
+    using System;
     using System.Collections.Generic;
     using System.Dynamic;
+    using System.Linq;
+
+    using AditOAUTH.Server.Grant;
 
     /// <summary> Defines the Parameters Class widely used across the program. </summary>
     public class Parameters : DynamicObject
@@ -23,25 +27,19 @@ namespace AditOAUTH.Server
         /// <summary> The values </summary>
         private readonly IDictionary<string, object> values;
 
-        /// <summary> Initializes a new instance of the <see cref="Parameters" /> class. </summary>
-        public Parameters()
+        /// <summary> Initializes a new instance of the <see cref="Parameters"/> class.  </summary>
+        /// <param name="properties"> The properties for the dynamic class </param>
+        public Parameters(IEnumerable<string> properties)
         {
-            this.values = new Dictionary<string, object>
-                              {
-                                  { "client_id", null },
-                                  { "client_secret", null },
-                                  { "username", null },
-                                  { "password", null },
-                                  { "scope", null },
-                                  { "redirect_uri", null },
-                                  { "response_type", null },
-                                  { "state", null },
-                                  { "code", null },
-                                  { "refresh_token", null },
-                                  { "client_details", null },
-                                  { "user_id", null },
-                                  { "scopes", null }
-                              };
+            var enumerable = properties as string[] ?? properties.ToArray();
+            if (!enumerable.Any()) throw new System.Exception("Initializing a dynamic class without properties is forbidden");
+
+            this.values = new Dictionary<string, object>();
+
+            foreach (var property in enumerable)
+            {
+                this.values.Add(property, null);
+            }
         }
 
         /// <summary>
@@ -52,14 +50,10 @@ namespace AditOAUTH.Server
         /// <returns>true if the operation is successful; otherwise, false. If this method returns false, the run-time binder of the language determines the behavior. (In most cases, a run-time exception is thrown.)</returns>
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            if (this.values.ContainsKey(binder.Name))
-            {
-                result = this.values[binder.Name];
-                return true;
-            }
-
-            result = null;
-            return false;
+            if (!this.values.ContainsKey(binder.Name))
+                this.values.Add(binder.Name, null);
+            result = binder.Name.Equals("response_type") ? (ResponseTypeIdentifier)this.values[binder.Name] : this.values[binder.Name];
+            return true;
         }
 
         /// <summary>
@@ -70,8 +64,9 @@ namespace AditOAUTH.Server
         /// <returns>true if the operation is successful; otherwise, false. If this method returns false, the run-time binder of the language determines the behavior. (In most cases, a language-specific run-time exception is thrown.)</returns>
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
-            if (!this.values.ContainsKey(binder.Name)) return false;
-            this.values[binder.Name] = value.ToString().ToUpper();
+            if (!this.values.ContainsKey(binder.Name))
+                this.values.Add(binder.Name, null);
+            this.values[binder.Name] = binder.Name.Equals("response_type") ? Enum.Parse(typeof(ResponseTypeIdentifier), value.ToString(), true) : value;
             return true;
         }
     }

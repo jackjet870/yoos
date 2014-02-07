@@ -28,7 +28,7 @@ namespace AditOAUTH.Server.Grant
         /// <summary> Initializes a new instance of the <see cref="Password"/> class. </summary>
         public Password()
         {
-            this.Identifier = GrantTypIdentifier.Password;
+            this.Identifier = GrantTypIdentifier.password;
         }
 
         /// <summary> Gets or sets override the default access token expire time </summary>
@@ -45,7 +45,7 @@ namespace AditOAUTH.Server.Grant
         public override FlowResult CompleteFlow(dynamic inputParams = null)
         {
             // Get the required params
-            var authParams = this.AuthServer.GetParam(HTTPMethod.Post, inputParams, "client_id", "client_secret", "username", "password");
+            var authParams = this.AuthServer.GetParam(new[] { "client_id", "client_secret", "username", "password" }, HTTPMethod.Post, inputParams);
 
             if (string.IsNullOrEmpty(authParams.client_id)) throw new ClientException(HTTPErrorType.invalid_request, "client_id");
             if (string.IsNullOrEmpty(authParams.client_secret)) throw new ClientException(HTTPErrorType.invalid_request, "client_secret");
@@ -114,10 +114,10 @@ namespace AditOAUTH.Server.Grant
             };
 
             // Associate a refresh token if set
-            if (this.AuthServer.HasGrantType(GrantTypIdentifier.RefreshToken))
+            if (this.AuthServer.HasGrantType(GrantTypIdentifier.refresh_token))
             {
                 var refreshToken = SecureKey.Make();
-                var refreshTokenTTL = DateTime.Now.AddSeconds(((RefreshToken)this.AuthServer.GetGrantType(GrantTypIdentifier.RefreshToken)).RefreshTokenTTL);
+                var refreshTokenTTL = DateTime.Now.AddSeconds(((RefreshToken)this.AuthServer.GetGrantType(GrantTypIdentifier.refresh_token)).RefreshTokenTTL);
                 this.AuthServer.Session.AssociateRefreshToken(accessTokenId, refreshToken, refreshTokenTTL, authParams.client_id);
                 response.RefreshToken = refreshToken;
             }

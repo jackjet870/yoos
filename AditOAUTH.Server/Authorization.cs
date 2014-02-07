@@ -16,6 +16,7 @@ namespace AditOAUTH.Server
 {
     using System;
     using System.Collections.Generic;
+    using System.Dynamic;
     using System.Web;
 
     using AditOAUTH.Server.Exception;
@@ -24,6 +25,8 @@ namespace AditOAUTH.Server
     using AditOAUTH.Server.Storage;
     using AditOAUTH.Server.Storage.PDO;
     using AditOAUTH.Server.Util;
+
+    using ImpromptuInterface;
 
     /// <summary> Definition for Authorization </summary>
     public class Authorization
@@ -233,11 +236,11 @@ namespace AditOAUTH.Server
         /// <param name="inputParams">Passed input parameters</param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>System.String. "Null" if parameter is missing</returns>
-        public object GetParam(string parameter, HTTPMethod method = HTTPMethod.Get, Parameters inputParams = null, object defaultValue = null)
+        public object GetParam(string parameter, HTTPMethod method = HTTPMethod.Get, dynamic inputParams = null, object defaultValue = null)
         {
-            if (inputParams != null && inputParams.GetType().GetProperty(parameter) != null)
+            if (inputParams != null && Impromptu.InvokeGet(inputParams, parameter) != null)
             {
-                return inputParams.GetType().GetProperty(parameter).GetValue(parameter);
+                return Impromptu.InvokeGet(inputParams, parameter);
             }
 
             if (parameter == "client_id" && this.Request != null && !string.IsNullOrEmpty(this.Request.Server("AUTH_USER")))
@@ -271,18 +274,20 @@ namespace AditOAUTH.Server
             }
         }
 
-        /// <summary> Get a parameter from passed input parameters </summary>
-        /// <param name="method"> Get / put / post / delete </param>
-        /// <param name="inputParams"> Passed input parameters </param>
-        /// <param name="defaultValue"> The default value </param>
-        /// <param name="parameter"> Required parameters </param>
-        /// <returns> NameValueCollection "Null" if parameter is missing </returns>
-        public dynamic GetParam(HTTPMethod method = HTTPMethod.Get, Parameters inputParams = null, string defaultValue = null, params string[] parameter)
+        /// <summary> Get a parameter from passed input parameters  </summary>
+        /// <param name="parameters"> Required parameters  </param>
+        /// <param name="method"> Get / put / post / delete  </param>
+        /// <param name="inputParams"> Passed input parameters  </param>
+        /// <param name="defaultValue"> The default value  </param>
+        /// <returns> NameValueCollection "Null" if parameter is missing  </returns>
+        public dynamic GetParam(string[] parameters, HTTPMethod method = HTTPMethod.Get, Parameters inputParams = null, string defaultValue = null)
         {
-            var response = new Parameters();
-            foreach (var p in parameter)
+            var response = new Parameters(parameters);
+            foreach (var p in parameters)
             {
-                response.GetType().GetProperty(p).SetValue(parameter, this.GetParam(p, method, inputParams));
+                var value = this.GetParam(p, method, inputParams);
+                if (value != null)
+                    Impromptu.InvokeSet(response, p, value);
             }
 
             return response;

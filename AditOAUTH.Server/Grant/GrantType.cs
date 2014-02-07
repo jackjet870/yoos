@@ -20,15 +20,15 @@ namespace AditOAUTH.Server.Grant
     public enum GrantTypIdentifier
     {
         /// <summary> Authorization code grant type </summary>
-        AuthorizationCode,
+        authorization_code,
         /// <summary> Client credentials grant type </summary>
-        ClientCredentials,
+        client_credentials,
         /// <summary> Implicit grant type </summary>
-        Implicit,
+        @implicit,
         /// <summary> Password grant type </summary>
-        Password,
+        password,
         /// <summary> Refresh_token grant type </summary>
-        RefreshToken
+        refresh_token
     }
 
     /// <summary> Response Type Identifier Enum </summary>

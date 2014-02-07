@@ -25,7 +25,7 @@ namespace AditOAUTH.Server.Grant
         /// <summary> Initializes a new instance of the <see cref="Implicit"/> class. </summary>
         public Implicit()
         {
-            this.Identifier = GrantTypIdentifier.Implicit;
+            this.Identifier = GrantTypIdentifier.@implicit;
             this.ResponseType = ResponseTypeIdentifier.Token;
         }
 

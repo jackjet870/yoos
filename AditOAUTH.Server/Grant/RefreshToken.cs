@@ -28,7 +28,7 @@ namespace AditOAUTH.Server.Grant
         /// <summary> Initializes a new instance of the <see cref="RefreshToken"/> class. </summary>
         public RefreshToken()
         {
-            this.Identifier = GrantTypIdentifier.RefreshToken;
+            this.Identifier = GrantTypIdentifier.refresh_token;
         }
 
         /// <summary> Gets or sets override the default access token expire time </summary>
@@ -48,7 +48,7 @@ namespace AditOAUTH.Server.Grant
         public override FlowResult CompleteFlow(dynamic inputParams = null)
         {
             // Get the required params
-            var authParams = this.AuthServer.GetParam(HTTPMethod.Post, inputParams, "client_id", "client_secret", "refresh_token", "scope");
+            var authParams = this.AuthServer.GetParam(new[] { "client_id", "client_secret", "refresh_token", "scope" }, HTTPMethod.Post, inputParams);
 
             if (string.IsNullOrEmpty(authParams.client_id)) throw new ClientException(HTTPErrorType.invalid_request, "client_id");
             if (string.IsNullOrEmpty(authParams.client_secret)) throw new ClientException(HTTPErrorType.invalid_request, "client_secret");
