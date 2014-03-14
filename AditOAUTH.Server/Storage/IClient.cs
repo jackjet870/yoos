@@ -50,10 +50,10 @@ namespace AditOAUTH.Server.Storage
         /// )
         /// </code>
         /// </summary>
+        /// <param name="grantType">The grant type used in the request (default = null)</param>
         /// <param name="clientId">The client's ID</param>
         /// <param name="clientSecret">The client's secret (default = null)</param>
         /// <param name="redirectUri">The client's redirect URI (default = null)</param>
-        /// <param name="grantType">The grant type used in the request (default = null)</param>
         /// <returns>Returns null if the validation fails, ClientResponse on success</returns>
         ClientResponse GetClient(GrantTypIdentifier grantType, string clientId, string clientSecret = null, string redirectUri = null);
     }
@@ -70,8 +70,8 @@ namespace AditOAUTH.Server.Storage
         /// <summary> Gets or sets the name of the client </summary>
         public string Name { get; set; }
 
-        /// <summary> Gets or sets a value indicating whether [automatic approve]. </summary>
-        /// <value><c>true</c> if [automatic approve]; otherwise, <c>false</c>.</value>
+        /// <summary> Gets or sets a value indicating whether [automatic approve] </summary>
+        /// <value><c>true</c> if [automatic approve]; otherwise, <c>false</c></value>
         public bool AutoApprove { get; set; }
     }
 }

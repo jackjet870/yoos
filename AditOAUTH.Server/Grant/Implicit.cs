@@ -19,10 +19,10 @@ namespace AditOAUTH.Server.Grant
     using AditOAUTH.Server.Storage;
     using AditOAUTH.Server.Util;
 
-    /// <summary> Class Implicit. </summary>
+    /// <summary> Class Implicit </summary>
     public class Implicit : GrantType
     {
-        /// <summary> Initializes a new instance of the <see cref="Implicit"/> class. </summary>
+        /// <summary> Initializes a new instance of the <see cref="Implicit"/> class </summary>
         public Implicit()
         {
             this.Identifier = GrantTypIdentifier.@implicit;
@@ -32,7 +32,7 @@ namespace AditOAUTH.Server.Grant
         /// <summary>
         /// Complete the client credentials grant
         /// </summary>
-        /// <param name="authParams">The authentication parameters.</param>
+        /// <param name="authParams">The authentication parameters</param>
         /// <returns>FlowResult information about the completed flow</returns>
         public override FlowResult CompleteFlow(dynamic authParams = null)
         {
@@ -58,7 +58,7 @@ namespace AditOAUTH.Server.Grant
                 this.AuthServer.Session.AssociateScope(accessTokenId, scope.ID);
             }
 
-            return new FlowResult { AccessToken = accessToken };
+            return new FlowResult { access_token = accessToken };
         }
     }
 }

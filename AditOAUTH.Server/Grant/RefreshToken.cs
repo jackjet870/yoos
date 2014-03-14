@@ -25,7 +25,7 @@ namespace AditOAUTH.Server.Grant
     /// <summary> Class RefreshToken </summary>
     internal class RefreshToken : GrantType
     {
-        /// <summary> Initializes a new instance of the <see cref="RefreshToken"/> class. </summary>
+        /// <summary> Initializes a new instance of the <see cref="RefreshToken"/> class </summary>
         public RefreshToken()
         {
             this.Identifier = GrantTypIdentifier.refresh_token;
@@ -38,7 +38,7 @@ namespace AditOAUTH.Server.Grant
         public int RefreshTokenTTL { get { return 604800; } }
 
         /// <summary> Gets or sets a value indicating whether [rotate refresh tokens] </summary>
-        /// <value><c>true</c> if [rotate refresh tokens]; otherwise, <c>false</c>.</value>
+        /// <value><c>true</c> if [rotate refresh tokens]; otherwise, <c>false</c></value>
         public bool RotateRefreshTokens { get; set; }
 
         /// <summary> Complete the refresh token grant </summary>
@@ -123,13 +123,13 @@ namespace AditOAUTH.Server.Grant
 
             var response = new FlowResult
             {
-                AccessToken = accessToken,
-                TokenType = "Bearer",
-                AccessTokenExpires = accessTokenExpires,
-                ExpiresIn = accessTokenExpiresIn
+                access_token = accessToken,
+                token_type = "Bearer",
+                access_token_expires = accessTokenExpires,
+                expires_in = accessTokenExpiresIn
             };
 
-            if (this.RotateRefreshTokens) response.RefreshToken = refreshToken;
+            if (this.RotateRefreshTokens) response.refresh_token = refreshToken;
 
             return response;
         }

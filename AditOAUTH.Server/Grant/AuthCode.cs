@@ -27,7 +27,7 @@ namespace AditOAUTH.Server.Grant
     /// <summary> OAuth 2.0 Auth code grant </summary>
     public class AuthCode : GrantType
     {
-        /// <summary> Initializes a new instance of the <see cref="AuthCode"/> class. </summary>
+        /// <summary> Initializes a new instance of the <see cref="AuthCode"/> class </summary>
         public AuthCode()
         {
             this.Identifier = GrantTypIdentifier.authorization_code;
@@ -41,7 +41,7 @@ namespace AditOAUTH.Server.Grant
         private int authTokenTTL = 600;
 
         /// <summary> Gets or sets override the default access token expire time </summary>
-        /// <value>The authentication token TTL.</value>
+        /// <value>The authentication token TTL</value>
         public int AuthTokenTTL
         {
             internal get { return this.authTokenTTL; }
@@ -100,7 +100,7 @@ namespace AditOAUTH.Server.Grant
         /// Parse a new authorise request
         /// </summary>
         /// <param name="type"> The session owner's type</param>
-        /// <param name="typeId">The type identifier.</param>
+        /// <param name="typeId">The type identifier</param>
         /// <param name="authParams">The session owner"s ID</param>
         /// <returns>System.String An authorisation code</returns>
         public string NewAuthoriseRequest(OwnerType type, string typeId, dynamic authParams)
@@ -130,7 +130,7 @@ namespace AditOAUTH.Server.Grant
         }
 
         /// <summary> Complete the auth code grant </summary>
-        /// <param name="inputParams">The input parameters.</param>
+        /// <param name="inputParams">The input parameters</param>
         /// <returns>FlowResult with the value of the flow</returns>
         /// <exception cref="ClientException"> Various client exceptions </exception>
         public override FlowResult CompleteFlow(dynamic inputParams = null)
@@ -180,10 +180,10 @@ namespace AditOAUTH.Server.Grant
 
             var response = new FlowResult
             {
-                AccessToken = accessToken,
-                TokenType = "Bearer",
-                AccessTokenExpires = accessTokenExpires,
-                ExpiresIn = accessTokenExpiresIn
+                access_token = accessToken,
+                token_type = "Bearer",
+                access_token_expires = accessTokenExpires,
+                expires_in = accessTokenExpiresIn
             };
 
             // Associate a refresh token if set
@@ -192,7 +192,7 @@ namespace AditOAUTH.Server.Grant
                 var refreshToken = SecureKey.Make();
                 var refreshTokenTTL = DateTime.Now.AddSeconds(((RefreshToken)this.AuthServer.GetGrantType(GrantTypIdentifier.refresh_token)).RefreshTokenTTL);
                 this.AuthServer.Session.AssociateRefreshToken(accessTokenId, refreshToken, refreshTokenTTL, authParams.client_id);
-                response.RefreshToken = refreshToken;
+                response.refresh_token = refreshToken;
             }
 
             return response;

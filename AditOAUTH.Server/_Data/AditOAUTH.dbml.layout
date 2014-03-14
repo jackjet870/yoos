@@ -2,141 +2,141 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.25, 12.75" name="AditOAUTH">
   <DataContextMoniker Name="/AditOAUTHDataContext" />
   <nestedChildShapes>
-    <classShape Id="1cbde752-cde9-4e8a-b727-d7ed615b641e" absoluteBounds="3.5, 10.375, 2, 1.9631982421874987">
+    <classShape Id="ed2825e6-cbb2-4844-a733-e5d685521396" absoluteBounds="3.5, 10.375, 2, 1.9631982421874987">
       <DataClassMoniker Name="/AditOAUTHDataContext/oauth_client_endpoint" />
       <nestedChildShapes>
-        <elementListCompartment Id="2c23e6a1-1c28-4cbd-821f-96829d1e88ad" absoluteBounds="3.515, 10.835, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="f27fbec3-363c-45c4-9a8d-4c14183fb768" absoluteBounds="3.515, 10.835, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="1ea620b5-744f-4986-9f24-0fdbbe31ec0c" absoluteBounds="3.5, 6, 2, 1.5785953776041666">
+    <classShape Id="0324fbc4-46cc-471e-b36d-68f8da311f52" absoluteBounds="3.5, 6, 2, 1.5785953776041666">
       <DataClassMoniker Name="/AditOAUTHDataContext/oauth_session" />
       <nestedChildShapes>
-        <elementListCompartment Id="379118a7-80b7-48db-bcc5-691c49a24a59" absoluteBounds="3.515, 6.46, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="e0a547b3-cd75-48fb-a83e-ccb7d5c20233" absoluteBounds="3.515, 6.46, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="605f9332-76c8-4574-8559-d7b8ada2d8a3" absoluteBounds="0.75, 7.25, 2, 1.5785953776041666">
+    <classShape Id="883518e8-edda-49ec-ba2f-8b3d73bb485c" absoluteBounds="0.75, 7.25, 2, 1.5785953776041666">
       <DataClassMoniker Name="/AditOAUTHDataContext/oauth_client" />
       <nestedChildShapes>
-        <elementListCompartment Id="0700543a-438f-440e-b4d6-79176b8ab623" absoluteBounds="0.765, 7.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="4a43139e-9c4e-418e-b6be-6bd42d22f09e" absoluteBounds="0.765, 7.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="49348721-52db-4ae0-ba8a-f8a971119dd3" absoluteBounds="6.25, 0.75, 2, 1.5785953776041666">
+    <classShape Id="7403457a-7162-4b49-92fd-807c21538f39" absoluteBounds="6.25, 0.75, 2, 1.5785953776041666">
       <DataClassMoniker Name="/AditOAUTHDataContext/oauth_scope" />
       <nestedChildShapes>
-        <elementListCompartment Id="9933c1ad-48fd-4c1a-9596-8c053c4a7a0b" absoluteBounds="6.265, 1.21, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="bbd14cfa-5c08-401d-8b50-8078dba610dd" absoluteBounds="6.265, 1.21, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="b7bd8967-5f24-43ac-b0a6-669f4ceceb35" absoluteBounds="6.25, 5.75, 2, 1.5785953776041666">
+    <classShape Id="53892c62-fdef-4b44-87e5-b4b7dafd7238" absoluteBounds="6.25, 5.75, 2, 1.5785953776041666">
       <DataClassMoniker Name="/AditOAUTHDataContext/oauth_session_access_token" />
       <nestedChildShapes>
-        <elementListCompartment Id="579113e7-49d4-4563-a95e-13fb1fbba809" absoluteBounds="6.265, 6.21, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="8a9e801d-0833-4223-983e-2d03e871290c" absoluteBounds="6.265, 6.21, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="4358ad82-2b29-43a9-8027-c41dbc95a555" absoluteBounds="9, 11.25, 2, 1.1939925130208344">
+    <classShape Id="f1bac85f-8c61-4021-a1fa-40a4c4d7d853" absoluteBounds="9, 11.25, 2, 1.1939925130208344">
       <DataClassMoniker Name="/AditOAUTHDataContext/oauth_session_authcode_scope" />
       <nestedChildShapes>
-        <elementListCompartment Id="3f12bcbf-0a3e-4fdb-8d84-1681c5c13d58" absoluteBounds="9.015, 11.71, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="9a8bf873-1673-475a-9f38-5f6a64328ebc" absoluteBounds="9.015, 11.71, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="ebc6caab-1069-43c7-b677-7761b1fb59ce" absoluteBounds="6.25, 8.125, 2, 1.5785953776041666">
+    <classShape Id="48b8fe0a-0206-4b44-b0aa-d2d02282f366" absoluteBounds="6.25, 8.125, 2, 1.5785953776041666">
       <DataClassMoniker Name="/AditOAUTHDataContext/oauth_session_authcode" />
       <nestedChildShapes>
-        <elementListCompartment Id="65a50723-ac0d-465d-834e-124f81226d44" absoluteBounds="6.265, 8.585, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="426e4435-b03d-4155-b437-5a2960df2ec5" absoluteBounds="6.265, 8.585, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="3fb2120d-b260-46f7-aeff-8d20983e2efd" absoluteBounds="6.25, 3.75, 2, 1.193992513020834">
+    <classShape Id="062a8acf-ba9c-4160-8c23-2fb9c325f151" absoluteBounds="6.25, 3.75, 2, 1.193992513020834">
       <DataClassMoniker Name="/AditOAUTHDataContext/oauth_session_redirect" />
       <nestedChildShapes>
-        <elementListCompartment Id="6fd70f22-4d8f-4a2e-96a8-8ba0f3e10895" absoluteBounds="6.265, 4.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="e083938c-d565-49f7-940c-bfe04c73d6bc" absoluteBounds="6.265, 4.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="cb498bcb-8c5e-4573-857c-ca9da38db4e2" absoluteBounds="9, 8.5, 2, 1.5785953776041666">
+    <classShape Id="ace179b7-bd88-4254-9a59-cee78297f773" absoluteBounds="9, 8.5, 2, 1.5785953776041666">
       <DataClassMoniker Name="/AditOAUTHDataContext/oauth_session_refresh_token" />
       <nestedChildShapes>
-        <elementListCompartment Id="b90c2297-a80c-4c4a-813d-46fca6f72c01" absoluteBounds="9.015, 8.96, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="915ea03b-95dc-46e5-adb6-54bb61f534e7" absoluteBounds="9.015, 8.96, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="d21e8de1-7f93-4005-a1a5-3dc95dda2a97" absoluteBounds="9, 5.875, 2, 1.3862939453125005">
+    <classShape Id="e3cbdba1-ac4d-428c-8fba-2de905cc2460" absoluteBounds="9, 5.875, 2, 1.3862939453125005">
       <DataClassMoniker Name="/AditOAUTHDataContext/oauth_session_token_scope" />
       <nestedChildShapes>
-        <elementListCompartment Id="4fc6e2f6-e29e-4255-a568-bf903766d0f8" absoluteBounds="9.015, 6.335, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="6d4170f9-8839-40dd-a290-bbfae5f7599b" absoluteBounds="9.015, 6.335, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(1.75 : 8.82859537760417); (1.75 : 11.3565991210937); (3.5 : 11.3565991210937)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(1.75 : 8.82859537760417); (1.75 : 11.3565991210937); (3.5 : 11.3565991210937)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/AditOAUTHDataContext/oauth_client/oauth_client_oauth_client_endpoint" />
       <nodes>
-        <classShapeMoniker Id="605f9332-76c8-4574-8559-d7b8ada2d8a3" />
-        <classShapeMoniker Id="1cbde752-cde9-4e8a-b727-d7ed615b641e" />
+        <classShapeMoniker Id="883518e8-edda-49ec-ba2f-8b3d73bb485c" />
+        <classShapeMoniker Id="ed2825e6-cbb2-4844-a733-e5d685521396" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 7.41429768880208); (3.5 : 7.41429768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 7.41429768880208); (3.5 : 7.41429768880208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/AditOAUTHDataContext/oauth_client/oauth_client_oauth_session" />
       <nodes>
-        <classShapeMoniker Id="605f9332-76c8-4574-8559-d7b8ada2d8a3" />
-        <classShapeMoniker Id="1ea620b5-744f-4986-9f24-0fdbbe31ec0c" />
+        <classShapeMoniker Id="883518e8-edda-49ec-ba2f-8b3d73bb485c" />
+        <classShapeMoniker Id="0324fbc4-46cc-471e-b36d-68f8da311f52" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 6.66429768880208); (6.25 : 6.66429768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.5 : 6.66429768880208); (6.25 : 6.66429768880208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/AditOAUTHDataContext/oauth_session/oauth_session_oauth_session_access_token" />
       <nodes>
-        <classShapeMoniker Id="1ea620b5-744f-4986-9f24-0fdbbe31ec0c" />
-        <classShapeMoniker Id="b7bd8967-5f24-43ac-b0a6-669f4ceceb35" />
+        <classShapeMoniker Id="0324fbc4-46cc-471e-b36d-68f8da311f52" />
+        <classShapeMoniker Id="53892c62-fdef-4b44-87e5-b4b7dafd7238" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.25 : 2.32738007346755); (8.625 : 2.70238007346755); (8.625 : 11.8469962565104); (9 : 11.8469962565104)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(8.25 : 2.32738007346755); (8.625 : 2.70238007346755); (8.625 : 11.8469962565104); (9 : 11.8469962565104)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/AditOAUTHDataContext/oauth_scope/oauth_scope_oauth_session_authcode_scope" />
       <nodes>
-        <classShapeMoniker Id="49348721-52db-4ae0-ba8a-f8a971119dd3" />
-        <classShapeMoniker Id="4358ad82-2b29-43a9-8027-c41dbc95a555" />
+        <classShapeMoniker Id="7403457a-7162-4b49-92fd-807c21538f39" />
+        <classShapeMoniker Id="f1bac85f-8c61-4021-a1fa-40a4c4d7d853" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(7.25 : 9.70359537760417); (7.25 : 11.5172456282552); (8.54166666666667 : 11.5172456282552 : JumpStart); (8.70833333333333 : 11.5172456282552 : JumpEnd); (9 : 11.5172456282552)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(7.25 : 9.70359537760417); (7.25 : 11.5172456282552); (9 : 11.5172456282552)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/AditOAUTHDataContext/oauth_session_authcode/oauth_session_authcode_oauth_session_authcode_scope" />
       <nodes>
-        <classShapeMoniker Id="ebc6caab-1069-43c7-b677-7761b1fb59ce" />
-        <classShapeMoniker Id="4358ad82-2b29-43a9-8027-c41dbc95a555" />
+        <classShapeMoniker Id="48b8fe0a-0206-4b44-b0aa-d2d02282f366" />
+        <classShapeMoniker Id="f1bac85f-8c61-4021-a1fa-40a4c4d7d853" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(4.5 : 7.57859537760417); (4.5 : 8.91429768880208); (6.25 : 8.91429768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(4.5 : 7.57859537760417); (4.5 : 8.91429768880208); (6.25 : 8.91429768880208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/AditOAUTHDataContext/oauth_session/oauth_session_oauth_session_authcode" />
       <nodes>
-        <classShapeMoniker Id="1ea620b5-744f-4986-9f24-0fdbbe31ec0c" />
-        <classShapeMoniker Id="ebc6caab-1069-43c7-b677-7761b1fb59ce" />
+        <classShapeMoniker Id="0324fbc4-46cc-471e-b36d-68f8da311f52" />
+        <classShapeMoniker Id="48b8fe0a-0206-4b44-b0aa-d2d02282f366" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(4.5 : 6); (4.5 : 4.34699625651042); (6.25 : 4.34699625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(4.5 : 6); (4.5 : 4.34699625651042); (6.25 : 4.34699625651042)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/AditOAUTHDataContext/oauth_session/oauth_session_oauth_session_redirect" />
       <nodes>
-        <classShapeMoniker Id="1ea620b5-744f-4986-9f24-0fdbbe31ec0c" />
-        <classShapeMoniker Id="3fb2120d-b260-46f7-aeff-8d20983e2efd" />
+        <classShapeMoniker Id="0324fbc4-46cc-471e-b36d-68f8da311f52" />
+        <classShapeMoniker Id="062a8acf-ba9c-4160-8c23-2fb9c325f151" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.2812525 : 8.82859537760417); (2.2812525 : 9.92234537760417); (7.16666666666667 : 9.92234537760417 : JumpStart); (7.33333333333333 : 9.92234537760417 : JumpEnd); (8.54166666666667 : 9.92234537760417 : JumpStart); (8.70833333333333 : 9.92234537760417 : JumpEnd); (9 : 9.92234537760417)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.2812525 : 8.82859537760417); (2.2812525 : 9.92234537760417); (9 : 9.92234537760417)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/AditOAUTHDataContext/oauth_client/oauth_client_oauth_session_refresh_token" />
       <nodes>
-        <classShapeMoniker Id="605f9332-76c8-4574-8559-d7b8ada2d8a3" />
-        <classShapeMoniker Id="cb498bcb-8c5e-4573-857c-ca9da38db4e2" />
+        <classShapeMoniker Id="883518e8-edda-49ec-ba2f-8b3d73bb485c" />
+        <classShapeMoniker Id="ace179b7-bd88-4254-9a59-cee78297f773" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.25 : 7.26666486663662); (8.56607443490112 : 7.58273930153774 : JumpStart); (8.68392556509888 : 7.7005904317355 : JumpEnd); (8.8125 : 7.82916486663662); (8.8125 : 9.17992068880208); (9 : 9.17992068880208)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(8.25 : 7.26666486663662); (8.56607443490112 : 7.58273930153774 : JumpStart); (8.68392556509888 : 7.7005904317355 : JumpEnd); (8.8125 : 7.82916486663662); (8.8125 : 9.17992068880208); (9 : 9.17992068880208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/AditOAUTHDataContext/oauth_session_access_token/oauth_session_access_token_oauth_session_refresh_token" />
       <nodes>
-        <classShapeMoniker Id="b7bd8967-5f24-43ac-b0a6-669f4ceceb35" />
-        <classShapeMoniker Id="cb498bcb-8c5e-4573-857c-ca9da38db4e2" />
+        <classShapeMoniker Id="53892c62-fdef-4b44-87e5-b4b7dafd7238" />
+        <classShapeMoniker Id="ace179b7-bd88-4254-9a59-cee78297f773" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.25 : 1.50743753673377); (10 : 1.50743753673377); (10 : 5.875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(8.25 : 1.50743753673377); (10 : 1.50743753673377); (10 : 5.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/AditOAUTHDataContext/oauth_scope/oauth_scope_oauth_session_token_scope" />
       <nodes>
-        <classShapeMoniker Id="49348721-52db-4ae0-ba8a-f8a971119dd3" />
-        <classShapeMoniker Id="d21e8de1-7f93-4005-a1a5-3dc95dda2a97" />
+        <classShapeMoniker Id="7403457a-7162-4b49-92fd-807c21538f39" />
+        <classShapeMoniker Id="e3cbdba1-ac4d-428c-8fba-2de905cc2460" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.25 : 6.56814697265625); (8.54166666666667 : 6.56814697265625 : JumpStart); (8.70833333333333 : 6.56814697265625 : JumpEnd); (9 : 6.56814697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(8.25 : 6.56814697265625); (9 : 6.56814697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/AditOAUTHDataContext/oauth_session_access_token/oauth_session_access_token_oauth_session_token_scope" />
       <nodes>
-        <classShapeMoniker Id="b7bd8967-5f24-43ac-b0a6-669f4ceceb35" />
-        <classShapeMoniker Id="d21e8de1-7f93-4005-a1a5-3dc95dda2a97" />
+        <classShapeMoniker Id="53892c62-fdef-4b44-87e5-b4b7dafd7238" />
+        <classShapeMoniker Id="e3cbdba1-ac4d-428c-8fba-2de905cc2460" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

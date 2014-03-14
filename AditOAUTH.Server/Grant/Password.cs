@@ -22,10 +22,10 @@ namespace AditOAUTH.Server.Grant
     using Storage;
     using Util;
 
-    /// <summary> Class Password. </summary>
+    /// <summary> Class Password </summary>
     internal class Password : GrantType
     {
-        /// <summary> Initializes a new instance of the <see cref="Password"/> class. </summary>
+        /// <summary> Initializes a new instance of the <see cref="Password"/> class </summary>
         public Password()
         {
             this.Identifier = GrantTypIdentifier.password;
@@ -107,10 +107,10 @@ namespace AditOAUTH.Server.Grant
 
             var response = new FlowResult
             {
-                AccessToken = accessToken,
-                TokenType = "Bearer",
-                AccessTokenExpires = accessTokenExpires,
-                ExpiresIn = accessTokenExpiresIn
+                access_token = accessToken,
+                token_type = "Bearer",
+                access_token_expires = accessTokenExpires,
+                expires_in = accessTokenExpiresIn
             };
 
             // Associate a refresh token if set
@@ -119,7 +119,7 @@ namespace AditOAUTH.Server.Grant
                 var refreshToken = SecureKey.Make();
                 var refreshTokenTTL = DateTime.Now.AddSeconds(((RefreshToken)this.AuthServer.GetGrantType(GrantTypIdentifier.refresh_token)).RefreshTokenTTL);
                 this.AuthServer.Session.AssociateRefreshToken(accessTokenId, refreshToken, refreshTokenTTL, authParams.client_id);
-                response.RefreshToken = refreshToken;
+                response.refresh_token = refreshToken;
             }
 
             return response;

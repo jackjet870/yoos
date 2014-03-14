@@ -19,7 +19,7 @@ namespace AditOAUTH.Server.Storage.PDO
     using System.Linq;
     using _Data;
 
-    /// <summary> Class Session. </summary>
+    /// <summary> Class Session </summary>
     public class Session : ISession
     {
         /// <summary>
@@ -49,7 +49,7 @@ namespace AditOAUTH.Server.Storage.PDO
             if (string.IsNullOrEmpty(clientId)) throw new ArgumentException("clientId");
             if (string.IsNullOrEmpty(ownerId)) throw new ArgumentException("ownerId");
             // INSERT INTO oauth_sessions (client_id, owner_type,  owner_id) VALUE (:clientId, :ownerType, :ownerId)
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 var os = new oauth_session { client_id = clientId, owner_type = ownerType.ToString(), owner_id = ownerId };
                 adc.oauth_sessions.InsertOnSubmit(os);
@@ -83,7 +83,7 @@ namespace AditOAUTH.Server.Storage.PDO
             if (string.IsNullOrEmpty(clientId)) throw new ArgumentException("clientId");
             if (string.IsNullOrEmpty(ownerId)) throw new ArgumentException("ownerId");
             // DELETE FROM oauth_sessions WHERE client_id = :clientId AND owner_type = :type AND owner_id = :typeId
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 var os = adc.oauth_sessions.SingleOrDefault(o => o.client_id == clientId && o.owner_type == ownerType.ToString() && o.owner_id == ownerId);
                 if (os == null) return;
@@ -112,7 +112,7 @@ namespace AditOAUTH.Server.Storage.PDO
             if (sessionId <= 0) throw new ArgumentException("sessionId");
             if (string.IsNullOrEmpty(redirectUri)) throw new ArgumentException("redirectUri");
             // INSERT INTO oauth_session_redirects (session_id, redirect_uri) VALUE (:sessionId, :redirectUri)
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 adc.oauth_session_redirects.InsertOnSubmit(new oauth_session_redirect
                 {
@@ -147,7 +147,7 @@ namespace AditOAUTH.Server.Storage.PDO
             if (sessionId <= 0) throw new ArgumentException("sessionId");
             if (string.IsNullOrEmpty(accessToken)) throw new ArgumentException("accessToken");
             // INSERT INTO oauth_session_access_tokens (session_id, access_token, access_token_expires) VALUE (:sessionId, :accessToken, :accessTokenExpire)
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 var osat = new oauth_session_access_token
                 {
@@ -189,7 +189,7 @@ namespace AditOAUTH.Server.Storage.PDO
             if (string.IsNullOrEmpty(refreshToken)) throw new ArgumentException("refreshToken");
             if (string.IsNullOrEmpty(clientId)) throw new ArgumentException("clientId");
             // INSERT INTO oauth_session_refresh_tokens (session_access_token_id, refresh_token, refresh_token_expires, client_id) VALUE (:accessTokenId, :refreshToken, :expireTime, :clientId)
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 adc.oauth_session_refresh_tokens.InsertOnSubmit(new oauth_session_refresh_token
                 {
@@ -226,7 +226,7 @@ namespace AditOAUTH.Server.Storage.PDO
             if (sessionId <= 0) throw new ArgumentException("sessionId");
             if (string.IsNullOrEmpty(authCode)) throw new ArgumentException("authCode");
             // INSERT INTO oauth_session_authcodes (session_id, auth_code, auth_code_expires) VALUE (:sessionId, :authCode, :authCodeExpires)
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 var osa = new oauth_session_authcode
                 {
@@ -257,7 +257,7 @@ namespace AditOAUTH.Server.Storage.PDO
         {
             if (sessionId <= 0) throw new ArgumentException("sessionId");
             // DELETE FROM oauth_session_authcodes WHERE session_id = :sessionId
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 var os = adc.oauth_session_authcodes.SingleOrDefault(o => o.session_id == sessionId);
                 if (os == null) return;
@@ -315,7 +315,7 @@ namespace AditOAUTH.Server.Storage.PDO
             // AND oauth_session_authcodes.auth_code= :authCode 
             // AND  oauth_session_authcodes.auth_code_expires >= :time 
             // AND oauth_session_redirects.redirect_uri = :redirectUri
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 var validate = from os in adc.oauth_sessions
                                join osa in adc.oauth_session_authcodes on os.id equals osa.session_id
@@ -373,7 +373,7 @@ namespace AditOAUTH.Server.Storage.PDO
             // JOIN oauth_sessions ON oauth_sessions.id = session_id 
             // WHERE access_token = :accessToken 
             // AND access_token_expires >= :time
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 var validate = from osat in adc.oauth_session_access_tokens
                                join os in adc.oauth_sessions on osat.session_id equals os.id
@@ -409,7 +409,7 @@ namespace AditOAUTH.Server.Storage.PDO
         {
             if (string.IsNullOrEmpty(refreshToken)) throw new ArgumentException("refreshToken");
             // DELETE FROM oauth_session_refresh_tokens WHERE refresh_token = :refreshToken
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 var os = adc.oauth_session_refresh_tokens.SingleOrDefault(o => o.refresh_token == refreshToken);
                 if (os == null) return;
@@ -447,7 +447,7 @@ namespace AditOAUTH.Server.Storage.PDO
             // WHERE refresh_token = :refreshToken 
             // AND client_id = :clientId 
             // AND refresh_token_expires >= :time
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 var validate = adc.oauth_session_refresh_tokens.SingleOrDefault(o => o.refresh_token == refreshToken && o.client_id == clientId && o.refresh_token_expires >= DateTime.Now);
                 if (validate != null)
@@ -486,7 +486,7 @@ namespace AditOAUTH.Server.Storage.PDO
             GetAccessTokenResponse gat = null;
 
             // SELECT * FROM oauth_session_access_tokens WHERE id = :accessTokenId
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 var get = adc.oauth_session_access_tokens.Where(o => o.id == accessTokenId).Select(o => new GetAccessTokenResponse
                     {
@@ -525,7 +525,7 @@ namespace AditOAUTH.Server.Storage.PDO
             if (scopeId <= 0) throw new ArgumentException("scopeId");
 
             // INSERT INTO oauth_session_authcode_scopes (oauth_session_authcode_id, scope_id) VALUES (:authCodeId, :scopeId)
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 adc.oauth_session_authcode_scopes.InsertOnSubmit(new oauth_session_authcode_scope
                 {
@@ -566,7 +566,7 @@ namespace AditOAUTH.Server.Storage.PDO
 
             List<int> rt;
             // SELECT scope_id FROM oauth_session_authcode_scopes WHERE oauth_session_authcode_id = :authCodeId
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 rt = adc.oauth_session_authcode_scopes.Where(o => o.oauth_session_authcode_id == oauthSessionAuthCodeId).Select(o => o.scope_id).ToList();
             }
@@ -595,7 +595,7 @@ namespace AditOAUTH.Server.Storage.PDO
             if (scopeId <= 0) throw new ArgumentException("scopeId");
 
             // INSERT INTO oauth_session_token_scopes (session_access_token_id, scope_id) VALUE (:accessTokenId, :scopeId)
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 adc.oauth_session_token_scopes.InsertOnSubmit(new oauth_session_token_scope
                 {
@@ -644,7 +644,7 @@ namespace AditOAUTH.Server.Storage.PDO
             // JOIN oauth_session_access_tokens ON oauth_session_access_tokens.id = oauth_session_token_scopes.session_access_token_id 
             // JOIN oauth_scopes ON oauth_scopes.id = oauth_session_token_scopes.scope_id 
             // WHERE access_token = :accessToken
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 var get = from osts in adc.oauth_session_token_scopes
                           join osat in adc.oauth_session_access_tokens on osts.session_access_token_id equals osat.id

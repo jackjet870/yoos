@@ -17,9 +17,8 @@ namespace AditOAUTH.Server.Storage.PDO
     using System;
     using System.Linq;
 
-    using AditOAUTH.Server.Grant;
-
     using _Data;
+    using AditOAUTH.Server.Grant;
 
     /// <summary> Defines a Client Object </summary>
     public class Client : IClient
@@ -55,10 +54,10 @@ namespace AditOAUTH.Server.Storage.PDO
         /// )
         /// </code>
         /// </summary>
+        /// <param name="grantType">The grant type used in the request (default = null)</param>
         /// <param name="clientId">The client's ID</param>
         /// <param name="clientSecret">The client's secret (default = null)</param>
         /// <param name="redirectUri">The client's redirect URI (default = null)</param>
-        /// <param name="grantType">The grant type used in the request (default = null)</param>
         /// <returns>Returns null if the validation fails, ClientResponse on success</returns>
         public ClientResponse GetClient(GrantTypIdentifier grantType, string clientId, string clientSecret = null, string redirectUri = null)
         {
@@ -68,7 +67,7 @@ namespace AditOAUTH.Server.Storage.PDO
                 uri = new Uri(redirectUri);
 
             ClientResponse response = null;
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 if (!string.IsNullOrEmpty(redirectUri) && string.IsNullOrEmpty(clientSecret))
                 {

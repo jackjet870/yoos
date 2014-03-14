@@ -21,7 +21,7 @@ namespace AditOAUTH.Server.Util
     /// <summary> Class RedirectUri </summary>
     public class RedirectUri
     {
-        /// <summary> Makes the specified URI. </summary>
+        /// <summary> Makes the specified URI </summary>
         /// <param name="uri">The URI</param>
         /// <param name="parameters">The parameters</param>
         /// <param name="queryDelimiter">The query delimiter</param>

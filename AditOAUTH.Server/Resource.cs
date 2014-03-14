@@ -24,69 +24,82 @@ namespace AditOAUTH.Server
     using Storage;
     using Util;
 
-    /// <summary> Class Resource. </summary>
+    /// <summary> Class Resource </summary>
     public class Resource
     {
-        /// <summary> Gets the access token. </summary>
+        /// <summary> Gets the access token </summary>
         /// <value>The access token</value>
         public string AccessToken { get; private set; }
+
         /// <summary> Gets the type of the owner of the access token </summary>
         /// <value>The type of the owner</value>
         public OwnerType OwnerType { get; private set; }
         /// <summary> Gets the ID of the owner of the access token </summary>
         /// <value>The owner identifier</value>
         public string OwnerId { get; private set; }
-        /// <summary>
-        /// The scopes associated with the access token
-        /// </summary>
+        
+        /// <summary> The scopes associated with the access token </summary>
         private readonly List<string> sessionScopes = new List<string>();
-        /// <summary>
-        /// The session storage class
-        /// </summary>
+
+        /// <summary> The session storage class </summary>
         private readonly ISession storage;
+
+        /// <summary> The request object </summary>
+        private IRequest request;
+        
         /// <summary> Gets or sets The Request object </summary>
         /// <value>The request</value>
-        public IRequest Request { get; set; }
+        public IRequest Request
+        {
+            get { return this.request ?? (this.request = Util.Request.BuildFromGlobals()); }
+            set { this.request = value; }
+        }
+        
         /// <summary> The query string key which is used by clients to present the access token (default: access_token) </summary>
         private string tokenKey = "access_token";
+        
         /// <summary> Gets or sets the token key </summary>
         /// <value>The token key</value>
         public string TokenKey { get { return this.tokenKey; } set { this.tokenKey = value; } }
+        
         /// <summary> Gets the client ID </summary>
         /// <value>The client identifier</value>
         public string ClientId { get; private set; }
+        
         /// <summary> The session ID </summary>
+        // ReSharper disable once NotAccessedField.Local
+        // but may be used somethimes in the future
         private int sessionId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Resource"/> class.
         /// </summary>
-        /// <param name="session">The session.</param>
+        /// <param name="session">The session</param>
         public Resource(ISession session)
         {
             this.storage = session;
         }
 
-        /// <summary> Determines whether the specified access token is valid. </summary>
+        /// <summary> Determines whether the specified access token is valid </summary>
         /// <param name="headersOnly">Limit Access Token to Authorization header only</param>
         /// <returns><c>true</c> if the specified headers only is valid; otherwise, <c>false</c>.</returns>
         /// <exception cref="InvalidAccessTokenException">Access token is not valid</exception>
         public bool IsValid(bool headersOnly = false)
         {
-            this.AccessToken = this.DetermineAccessToken(headersOnly);
+            var accessToken = this.DetermineAccessToken(headersOnly);
 
-            var result = this.storage.ValidateAccessToken(this.AccessToken);
+            var result = this.storage.ValidateAccessToken(accessToken);
 
             if (result == null) throw new InvalidAccessTokenException(HTTPErrorType.invalid_access_token);
 
-            this.AccessToken = this.AccessToken;
+            this.AccessToken = accessToken;
             this.sessionId = result.SessionID;
             this.ClientId = result.ClientID;
             this.OwnerType = result.OwnerType;
             this.OwnerId = result.OwnerID;
 
-            var sss = this.storage.GetScopes(this.AccessToken);
-            foreach (var scope in sss)
+            var scopes = this.storage.GetScopes(this.AccessToken);
+            foreach (var scope in scopes)
             {
                 this.sessionScopes.Add(scope.Scope);
             }
@@ -117,7 +130,7 @@ namespace AditOAUTH.Server
         }
 
         /// <summary> Checks if the presented access token has the given scope </summary>
-        /// <param name="scope">The scope.</param>
+        /// <param name="scope">The scope</param>
         /// <returns>Returns true if the scope is found, false if fail</returns>
         public bool HasScope(string scope)
         {

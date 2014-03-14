@@ -18,7 +18,6 @@ namespace AditOAUTH.Server.HTTPError
     using System.Collections.Generic;
     using System.Linq;
 
-
     /// <summary>
     /// Enum Type of error
     /// </summary>
@@ -187,7 +186,7 @@ namespace AditOAUTH.Server.HTTPError
             }
         }
 
-        /// <summary> Gets the <see cref="HTTPError" /> with the specified type. </summary>
+        /// <summary> Gets the <see cref="HTTPError" /> with the specified type </summary>
         /// <param name="type">The type to search</param>
         /// <returns>HTTPError based on type </returns>
         public HTTPError this[HTTPErrorType type]
@@ -195,7 +194,7 @@ namespace AditOAUTH.Server.HTTPError
             get { return this.errors.Single(e => e.Type.Equals(type)); }
         }
 
-        /// <summary> Gets the <see cref="HTTPError" /> with the specified HTTP status code. </summary>
+        /// <summary> Gets the <see cref="HTTPError" /> with the specified HTTP status code </summary>
         /// <param name="httpStatusCode">The HTTP status code to search</param>
         /// <returns>HTTPError based on type</returns>
         public HTTPError this[int httpStatusCode]
@@ -206,16 +205,16 @@ namespace AditOAUTH.Server.HTTPError
         /// <summary> Define HTTPError object </summary>
         public class HTTPError
         {
-            /// <summary> Gets or sets the type. </summary>
-            /// <value>The type.</value>
+            /// <summary> Gets or sets the type </summary>
+            /// <value>The type</value>
             public HTTPErrorType Type { get; set; }
 
-            /// <summary> Gets or sets the message. </summary>
-            /// <value>The message.</value>
+            /// <summary> Gets or sets the message </summary>
+            /// <value>The message</value>
             public string Message { get; set; }
 
-            /// <summary> Gets or sets the HTTP status code. </summary>
-            /// <value>The HTTP status code.</value>
+            /// <summary> Gets or sets the HTTP status code </summary>
+            /// <value>The HTTP status code</value>
             public int HTTPStatusCode { get; set; }
         }
     }

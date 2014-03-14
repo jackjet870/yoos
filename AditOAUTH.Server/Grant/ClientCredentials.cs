@@ -22,10 +22,10 @@ namespace AditOAUTH.Server.Grant
     using Storage;
     using Util;
 
-    /// <summary> Class ClientCredentials. </summary>
+    /// <summary> Class ClientCredentials </summary>
     public class ClientCredentials : GrantType
     {
-        /// <summary> Initializes a new instance of the <see cref="ClientCredentials"/> class. </summary>
+        /// <summary> Initializes a new instance of the <see cref="ClientCredentials"/> class </summary>
         public ClientCredentials()
         {
             this.Identifier = GrantTypIdentifier.client_credentials;
@@ -35,7 +35,7 @@ namespace AditOAUTH.Server.Grant
         public int AccessTokenTTL { internal get; set; }
 
         /// <summary> Complete the client credentials grant </summary>
-        /// <param name="inputParams">The input parameters.</param>
+        /// <param name="inputParams">The input parameters</param>
         /// <returns>FlowResult with flow details </returns>
         /// <exception cref="ClientException"> If the flow fails </exception>
         public override FlowResult CompleteFlow(dynamic inputParams = null)
@@ -93,10 +93,10 @@ namespace AditOAUTH.Server.Grant
 
             return new FlowResult
             {
-                AccessToken = accessToken,
-                TokenType = "Bearer",
-                AccessTokenExpires = accessTokenExpires,
-                ExpiresIn = accessTokenExpiresIn
+                access_token = accessToken,
+                token_type = "Bearer",
+                access_token_expires = accessTokenExpires,
+                expires_in = accessTokenExpiresIn
             };
         }
     }

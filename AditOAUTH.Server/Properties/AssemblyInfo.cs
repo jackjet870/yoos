@@ -1,4 +1,18 @@
-﻿using System.Reflection;
+﻿// ***********************************************************************
+// Assembly         : AditOAUTH.Server
+// Author           : vfornito
+// Created          : 11-05-2013
+//
+// Last Modified By : vfornito
+// Last Modified On : 12-06-2013
+// ***********************************************************************
+// <copyright file="AssemblyInfo.cs" company="Autodistribution Italia Spa">
+//     Copyright (c) Autodistribution Italia Spa. All rights reserved.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -9,7 +23,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Autodistribution Italia Spa")]
 [assembly: AssemblyProduct("AditOAUTH.Server")]
-[assembly: AssemblyCopyright("Copyright © Autodistribution Italia Spa 2013")]
+[assembly: AssemblyCopyright("Copyright © Autodistribution Italia Spa 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

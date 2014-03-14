@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="AditOAUTH" Class="AditOAUTHDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="AditOAUTH" Class="AditOAUTHDataContext" AccessModifier="Internal" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=192.168.1.5;Initial Catalog=AditOAUTH;User ID=sa" SettingsObjectName="AditOAUTH.Server.Properties.Settings" SettingsPropertyName="AditOAUTHConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.oauth_client_endpoints" Member="oauth_client_endpoints">
     <Type Name="oauth_client_endpoint">

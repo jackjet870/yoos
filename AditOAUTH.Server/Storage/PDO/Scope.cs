@@ -16,22 +16,21 @@ namespace AditOAUTH.Server.Storage.PDO
 {
     using System.Linq;
 
+    using _Data;
     using AditOAUTH.Server.Grant;
 
-    using _Data;
-
-    /// <summary> Class Scope. </summary>
+    /// <summary> Class Scope </summary>
     public class Scope : IScope
     {
         /// <summary> Return information about a scope </summary>
+        /// <param name="grantType">The grant type used in the request (default = null)</param>
         /// <param name="scope">The scope</param>
         /// <param name="clientId">The client ID (default = null)</param>
-        /// <param name="grantType">The grant type used in the request (default = null)</param>
         /// <returns>If the scope doesn't exist return null</returns>
-        public ScopeResponse GetScope( GrantTypIdentifier grantType, string scope, string clientId = null)
+        public ScopeResponse GetScope(GrantTypIdentifier grantType, string scope, string clientId = null)
         {
             ScopeResponse sr = null;
-            using (var adc = new AditOAUTHDataContext(Db.ConnectionString))
+            using (var adc = new AditOAUTHDataContext(Constants.DBConnectionString))
             {
                 // SELECT * 
                 // FROM oauth_scopes 

@@ -16,14 +16,12 @@ namespace AditOAUTH.Server
 {
     using System;
     using System.Collections.Generic;
-    using System.Dynamic;
     using System.Web;
 
     using AditOAUTH.Server.Exception;
     using AditOAUTH.Server.Grant;
     using AditOAUTH.Server.HTTPError;
     using AditOAUTH.Server.Storage;
-    using AditOAUTH.Server.Storage.PDO;
     using AditOAUTH.Server.Util;
 
     using ImpromptuInterface;
@@ -35,15 +33,15 @@ namespace AditOAUTH.Server
         private readonly Dictionary<GrantTypIdentifier, GrantType> grantTypes = new Dictionary<GrantTypIdentifier, GrantType>();
 
         /// <summary> Gets the Client PDO Class </summary>
-        /// <value>The client.</value>
+        /// <value>The client</value>
         internal IClient Client { get; private set; }
 
         /// <summary> Gets the Session PDO Class </summary>
-        /// <value>The session.</value>
+        /// <value>The session</value>
         internal ISession Session { get; private set; }
 
         /// <summary> Gets the Scope PDO Class </summary>
-        /// <value>The scope.</value>
+        /// <value>The scope</value>
         internal IScope Scope { get; private set; }
 
         /// <summary> The TTL (time to live) of an access token in seconds (default: 3600) </summary>
@@ -65,13 +63,11 @@ namespace AditOAUTH.Server
         /// <param name="client"> A class which inherits from Storage/IClient</param>
         /// <param name="session"> A class which inherits from Storage/ISession</param>
         /// <param name="scope"> A class which inherits from Storage/IScope</param>
-        /// <param name="connectionString"> Database connection string </param>
-        public Authorization(IClient client, ISession session, IScope scope, string connectionString)
+        public Authorization(IClient client, ISession session, IScope scope)
         {
             this.Client = client;
             this.Session = session;
             this.Scope = scope;
-            Db.ConnectionString = connectionString;
         }
 
         /// <summary> Gets or sets the scope delimeter </summary>
@@ -205,7 +201,8 @@ namespace AditOAUTH.Server
         public FlowResult IssueAccessToken(Parameters inputParams = null)
         {
             GrantTypIdentifier grantType;
-            if (Enum.TryParse(this.GetParam("grant_type", HTTPMethod.Post, inputParams).ToString(), out grantType) == false)
+            var param = this.GetParam("grant_type", HTTPMethod.Post, inputParams);
+            if (param == null || Enum.TryParse(param.ToString(), out grantType) == false)
                 throw new ClientException(HTTPErrorType.invalid_request, "grant_type");
 
             // Ensure grant type is one that is recognised and is enabled

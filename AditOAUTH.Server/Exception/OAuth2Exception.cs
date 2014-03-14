@@ -20,7 +20,7 @@ namespace AditOAUTH.Server.Exception
         /// <summary> Initializes a new instance of the <see cref="OAuth2Exception"/> class </summary>
         public OAuth2Exception() : base("Generic Oauth2Exception: you mustn't see this...") { }
         /// <summary> Initializes a new instance of the <see cref="OAuth2Exception" /> class with a specified error message </summary>
-        /// <param name="message">The message that describes the error.</param>
+        /// <param name="message">The message that describes the error</param>
         public OAuth2Exception(string message) : base(message) { }
     }
 }

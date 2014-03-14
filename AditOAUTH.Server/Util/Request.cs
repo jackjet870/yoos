@@ -39,7 +39,7 @@ namespace AditOAUTH.Server.Util
         /// <summary> The _server </summary>
         private readonly NameValueCollection server;
 
-        /// <summary> Initializes a new instance of the <see cref="Request" /> class. </summary>
+        /// <summary> Initializes a new instance of the <see cref="Request" /> class </summary>
         /// <param name="get">The get</param>
         /// <param name="post">The post</param>
         /// <param name="cookies">The cookies</param>
@@ -54,10 +54,10 @@ namespace AditOAUTH.Server.Util
             this.files = files;
             this.server = server ?? new NameValueCollection();
 
-            if (headers == null) this.headers = this.ReadHeaders();
+            this.headers = headers ?? this.ReadHeaders();
         }
 
-        /// <summary> Gets the specified index from get server variable. </summary>
+        /// <summary> Gets the specified index from get server variable </summary>
         /// <param name="index">The index to search</param>
         /// <param name="defaultValue">The default value if the index does not exists</param>
         /// <returns>String representing the value from the server variable at index</returns>
@@ -84,7 +84,7 @@ namespace AditOAUTH.Server.Util
             return this.cookies[index] ?? defaultValue;
         }
 
-        /// <summary> Gets the specified index from files server variable. </summary>
+        /// <summary> Gets the specified index from files server variable </summary>
         /// <param name="index">The index to search</param>
         /// <param name="defaultValue">The default value if the index does not exists</param>
         /// <returns>System.Object representing the value from the server variable at index</returns>
